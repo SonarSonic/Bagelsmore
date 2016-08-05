@@ -1,0 +1,27 @@
+{
+    "parent":"block/block",
+    "textures": {
+        "table": "bagelsmore:model/table_new",
+        "0": "bagelsmore:model/table_newnew_side",
+        "1": "bagelsmore:model/table_new",
+        "2": "bagelsmore:model/table_new_sidenew",
+        "3": "bagelsmore:model/table_side_finalfinal",
+        "4": "bagelsmore:model/drawer",
+        "5": "bagelsmore:model/gold_handle"
+    },
+    "elements": [
+        {
+            "name": "Table",
+            "from": [ 0.0, 14.0, 0.0 ], 
+            "to": [ 16.0, 15.5, 16.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 1.5 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 1.5 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 1.5 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 0.0, 14.0, 1.5 ] },
+                "up": { "texture": "#table", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        }
+    ]
+}

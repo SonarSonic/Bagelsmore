@@ -1,0 +1,54 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "bagelsmore:TableTop",
+		"transform": "forge:default-block",
+		"textures":{		
+            "particle": "bagelsmore:model/table_new"
+		}
+	},
+	"variants": {
+		"inventory": [{		  
+            "submodel": {
+                "table": {"model": "bagelsmore:Desk"}
+            }
+        }],
+		"facing": {
+			"north": {
+				
+			},
+			"south": {
+				"y": 180
+			},
+			"west": {
+				"y": 270
+			},
+			"east": {
+				"y": 90
+			}
+		},
+        "table": {
+            "left": {
+                "textures":{                
+                    "table": "bagelsmore:model/table_left"
+                },
+                "submodel": {
+                    "table": {"model": "bagelsmore:Desk"}
+                }
+            },
+            "middle": {
+                "textures":{                
+                    "table": "bagelsmore:model/table_middle"
+                }
+            },
+            "right": {
+                "textures":{                
+                    "table": "bagelsmore:model/table_right"
+                },
+                "submodel": {
+                    "table": {"model": "bagelsmore:Desk"}
+                }
+            }
+        }
+	}
+}
