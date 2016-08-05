@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import sonar.bagels.parts.DeskMultipart;
 import sonar.bagels.parts.DeskMultipart.DeskPosition;
 import sonar.bagels.parts.Paper;
+import sonar.bagels.parts.SwordMount;
 
 public class DeskItem extends ItemMultiPart {
 	
@@ -35,8 +36,16 @@ public class DeskItem extends ItemMultiPart {
 			}
 		}
 		if (!world.isRemote){
-			parts.forEach(part -> MultipartHelper.addPart(world, pos.offset(hoz, part.position.ordinal() - 1), part));
+			parts.forEach(part -> MultipartHelper.addPart(world, pos.offset(hoz, part.position.ordinal() - 1), part.setMiddle(pos)));
 			MultipartHelper.addPart(world, pos, new Paper(facing));
+			MultipartHelper.addPart(world, pos, new SwordMount(facing));
+			/*
+			MultipartHelper.addPart(world, pos.offset(hoz.getOpposite()), new DrawerLarge(DrawerPosition.LARGE_BOTTOM, facing));
+			MultipartHelper.addPart(world, pos.offset(hoz.getOpposite()), new DrawerSmall(DrawerPosition.SMALL_TOP, facing));
+			MultipartHelper.addPart(world, pos.offset(hoz), new DrawerSmall(DrawerPosition.SMALL_BOTTOM, facing));
+			MultipartHelper.addPart(world, pos.offset(hoz), new DrawerSmall(DrawerPosition.SMALL_MIDDLE, facing));
+			MultipartHelper.addPart(world, pos.offset(hoz), new DrawerSmall(DrawerPosition.SMALL_TOP, facing));
+			*/
 		}
 		consumeItem(stack);
 

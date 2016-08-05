@@ -3,21 +3,30 @@ package sonar.bagels.parts;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import mcmultipart.MCMultiPartMod;
 import mcmultipart.multipart.INormallyOccludingPart;
 import mcmultipart.multipart.Multipart;
+import mcmultipart.raytrace.PartMOP;
 import net.minecraft.block.BlockHorizontal;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
-import sonar.bagels.parts.DeskMultipart.DeskPosition;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IWorldNameable;
+import scala.actors.threadpool.Arrays;
 
-public abstract class SidedMultipart extends Multipart implements INormallyOccludingPart {
+public abstract class SidedMultipart extends Multipart implements INormallyOccludingPart, IDeskPart, IWorldNameable {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
 
@@ -30,6 +39,29 @@ public abstract class SidedMultipart extends Multipart implements INormallyOcclu
 		this.face = face;
 	}
 
+	public EnumFacing getPartFacing() {
+		return face;
+	}
+
+	@Override
+	public List<ItemStack> getDrops() {
+		ArrayList<ItemStack> drops = new ArrayList();
+		ItemStack stack = this.createItemStack();
+		if (stack != null) {
+			drops.add(stack);
+		}
+		return drops;
+
+	}
+
+	@Override
+	public ItemStack getPickBlock(EntityPlayer player, PartMOP hit) {
+
+		return createItemStack();
+	}
+
+	public abstract ItemStack createItemStack();
+
 	public void addSelectionBoxes(List<AxisAlignedBB> list) {
 		this.addOcclusionBoxes(list);
 	}
@@ -39,9 +71,9 @@ public abstract class SidedMultipart extends Multipart implements INormallyOcclu
 		ArrayList<AxisAlignedBB> boxes = new ArrayList();
 		addSelectionBoxes(boxes);
 		boxes.forEach(box -> {
-			if(box.intersectsWith(mask)){
+			if (box.intersectsWith(mask)) {
 				list.add(box);
-			}			
+			}
 		});
 	}
 
@@ -75,4 +107,30 @@ public abstract class SidedMultipart extends Multipart implements INormallyOcclu
 	public IBlockState getActualState(IBlockState state) {
 		return state.withProperty(FACING, face);
 	}
+
+	@Override
+	public String getName() {
+		return "Bagelsmore Part";
+	}
+
+	@Override
+	public boolean hasCustomName() {
+		return false;
+	}
+
+	@Override
+	public ITextComponent getDisplayName() {
+		return new TextComponentTranslation("Bagelsmore Part");
+	}
+
+	public float getHardness(PartMOP hit) {
+
+		return 1.0F;
+	}
+
+	public Material getMaterial() {
+
+		return Material.WOOD;
+	}
+
 }

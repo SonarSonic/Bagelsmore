@@ -1,4 +1,7 @@
 {
+    "textures":{        
+      "paper": "bagelsmore:model/paper"
+    },
     "elements": [
         {
             "name": "Paper",

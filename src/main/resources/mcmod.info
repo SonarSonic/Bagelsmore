@@ -1,0 +1,16 @@
+[
+{
+"modid": "bagelsmore",
+"name": "Bagelsmore's Desks",
+"description": "Some mighty fine desks. Created for the Modding Trials",
+"version": "${version}",
+"mcversion": "${mcversion}",
+"updateUrl": "",
+"authors": ["Ollie Lansdell"],
+"credits": "Created by Ollie Lansdell",
+"logoFile": "",
+"screenshots": [],
+"dependencies": ["mcmultipart"],
+"useDependencyInformation": true
+}
+]

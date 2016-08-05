@@ -1,13 +1,16 @@
 {
     "parent":"block/block",
+                
+    "display": {
+        "gui": {
+            "rotation": [ 30, 225, 0 ],
+            "translation": [ 0, 0, 0],
+            "scale":[ 0.3, 0.3, 0.3 ]
+        }
+    },
     "textures": {
-        "table": "bagelsmore:model/table_new",
-        "0": "bagelsmore:model/table_newnew_side",
-        "1": "bagelsmore:model/table_new",
-        "2": "bagelsmore:model/table_new_sidenew",
-        "3": "bagelsmore:model/table_side_finalfinal",
-        "4": "bagelsmore:model/drawer",
-        "5": "bagelsmore:model/gold_handle"
+        "table": "bagelsmore:model/spruce/table_top",
+        "0": "bagelsmore:model/spruce/table_dark"
     },
     "elements": [
         {
