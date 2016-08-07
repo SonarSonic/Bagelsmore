@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing.AxisDirection;
 import sonar.bagels.parts.DeskDrawer;
 import sonar.bagels.parts.StorageDrawer;
 
@@ -83,6 +84,30 @@ public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
 		if (part instanceof StorageDrawer) {
 			GlStateManager.translate(part.getPos().getX(), part.getPos().getY(), part.getPos().getZ());
 
+			//GL11.glRotated(part.face.getHorizontalAngle(), 0, 1, 0);
+			//GL11.glTranslated(part.face.getFrontOffsetX(), 0, part.face.getFrontOffsetZ());
+			switch(part.face){
+			
+			case EAST:
+				GL11.glRotated(-90, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
+				break;
+			case NORTH:
+				//GL11.glRotated(part.face.getHorizontalAngle(), 0, -1, 0);
+				break;
+			case SOUTH:
+				GL11.glRotated(180, 0, 1, 0);
+				GL11.glTranslated(-1, 0, -1);
+				break;
+			case WEST:
+				GL11.glRotated(90, 0, 1, 0);
+				GL11.glTranslated(-1, 0, 0);
+				break;
+			default:
+				break;
+			
+			}
+			
 			RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 			GlStateManager.scale(0.5, 0.5, 0.5);
 			GlStateManager.translate(0.0625*8.5, 0.0625*4, 0.0625*5);
@@ -91,12 +116,12 @@ public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
 				int layer = i / 16;
 				int row = (i - (layer * 16)) / 4;
 				int colomn = i - (layer * 16) - (row * 4);
-				GlStateManager.translate(row * (0.0625 * 5), layer*0.0625 * 5, colomn * (0.0625 * 5));
+				GlStateManager.translate(row * (0.0625 * 5), layer*0.0625 * 4.5, colomn * (0.0625 * 5));
 				ItemStack stack = drawer.inv.getStackInSlot(i);
 				if (stack != null && stack.stackSize != 0) {
 					renderItem.renderItem(stack, TransformType.GROUND);
 				}
-				GlStateManager.translate(-(row * (0.0625 * 5)), -layer*0.0625 * 5, -(colomn * (0.0625 * 5)));
+				GlStateManager.translate(-(row * (0.0625 * 5)), -layer*0.0625 * 4.5, -(colomn * (0.0625 * 5)));
 			}
 		}
 		GlStateManager.popMatrix();

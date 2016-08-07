@@ -11,27 +11,27 @@ import sonar.bagels.parts.InventoryMultipart;
 //edited Container chest hehe
 public class ContainerStorageDrawer extends Container {
 	private final InventoryMultipart multipart;
-	private final int numRows;
 
 	public ContainerStorageDrawer(InventoryMultipart multipart, EntityPlayer player) {
 		this.multipart = multipart;
-		this.numRows = multipart.getInvSize() / 9;
-		int i = (this.numRows - 4) * 18;
-
-		for (int j = 0; j < this.numRows; ++j) {
-			for (int k = 0; k < 9; ++k) {
-				this.addSlotToContainer(new Slot(multipart.inv, k + j * 9, 8 + k * 18, 18 + j * 18));
+		int numLayers = multipart.getInvSize() / 16;
+		
+		for (int layer = 0; layer < numLayers; layer++) {
+			for (int j = 0; j < 4; ++j) {
+				for (int k = 0; k < 4; ++k) {
+					this.addSlotToContainer(new Slot(multipart.inv, (k + j * 4) + (layer*16), (8 + k * 18) + (multipart.getInvSize()==32 ? (layer*90): 45), 18 + j * 18));
+				}
 			}
 		}
 
 		for (int l = 0; l < 3; ++l) {
 			for (int j1 = 0; j1 < 9; ++j1) {
-				this.addSlotToContainer(new Slot(player.inventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
+				this.addSlotToContainer(new Slot(player.inventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + (l * 18)+1));
 			}
 		}
 
 		for (int i1 = 0; i1 < 9; ++i1) {
-			this.addSlotToContainer(new Slot(player.inventory, i1, 8 + i1 * 18, 161 + i));
+			this.addSlotToContainer(new Slot(player.inventory, i1, 8 + i1 * 18, 161+1));
 		}
 	}
 
@@ -48,11 +48,11 @@ public class ContainerStorageDrawer extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (index < this.numRows * 9) {
-				if (!this.mergeItemStack(itemstack1, this.numRows * 9, this.inventorySlots.size(), true)) {
+			if (index < multipart.getInvSize()) {
+				if (!this.mergeItemStack(itemstack1, multipart.getInvSize(), this.inventorySlots.size(), true)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 0, this.numRows * 9, false)) {
+			} else if (!this.mergeItemStack(itemstack1, 0, multipart.getInvSize(), false)) {
 				return null;
 			}
 

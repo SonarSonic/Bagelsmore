@@ -12,19 +12,23 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import sonar.bagels.items.DeskDrawerItem;
+import sonar.bagels.items.DeskDrawerItem.SmeltingDrawerItem;
 import sonar.bagels.items.DeskItem;
 import sonar.bagels.network.BagelCommon;
+import sonar.bagels.parts.Bookshelf;
 import sonar.bagels.parts.DeskMultipart;
 import sonar.bagels.parts.DrawerLarge;
 import sonar.bagels.parts.DrawerSmall;
 import sonar.bagels.parts.Paper;
+import sonar.bagels.parts.SmeltingDrawer;
 import sonar.bagels.parts.SwordMount;
 
 @Mod(modid = Bagels.modid, name = "bagelsmore", version = Bagels.version)
 public class Bagels {
-	//HORRORS LIE IN THIS SOURCE CODE, STAY BACK
+	// HORRORS LIE IN THIS SOURCE CODE, STAY BACK
 	public static final String modid = "bagelsmore";
 	public static final String version = "1.0.0";
 
@@ -33,24 +37,31 @@ public class Bagels {
 
 	@SidedProxy(clientSide = "sonar.bagels.network.BagelClient", serverSide = "sonar.bagels.network.BagelCommon")
 	public static BagelCommon proxy;
-	
-	public static Item desk, smallDrawer, largeDrawer;
+
+	public static SimpleNetworkWrapper network;
+
+	public static Item desk, smallDrawer, largeDrawer, smeltingDrawer;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		desk = new DeskItem().setUnlocalizedName("Desk").setRegistryName("Desk").setCreativeTab(CreativeTabs.MISC);		
+		desk = new DeskItem().setUnlocalizedName("Desk").setRegistryName("Desk").setCreativeTab(CreativeTabs.MISC);
 		GameRegistry.register(desk);
-		largeDrawer = new DeskDrawerItem.DrawerLargeItem().setUnlocalizedName("DrawerLarge").setRegistryName("DrawerLarge").setCreativeTab(CreativeTabs.MISC);	
+		largeDrawer = new DeskDrawerItem.DrawerLargeItem().setUnlocalizedName("DrawerLarge").setRegistryName("DrawerLarge").setCreativeTab(CreativeTabs.MISC);
 		GameRegistry.register(largeDrawer);
-		smallDrawer = new DeskDrawerItem.DrawerSmallItem().setUnlocalizedName("DrawerSmall").setRegistryName("DrawerSmall").setCreativeTab(CreativeTabs.MISC);	
-		GameRegistry.register(smallDrawer);		
-		
+		smallDrawer = new DeskDrawerItem.DrawerSmallItem().setUnlocalizedName("DrawerSmall").setRegistryName("DrawerSmall").setCreativeTab(CreativeTabs.MISC);
+		GameRegistry.register(smallDrawer);
+		smeltingDrawer = new SmeltingDrawerItem().setUnlocalizedName("SmeltingDrawer").setRegistryName("SmeltingDrawer").setCreativeTab(CreativeTabs.MISC);
+		GameRegistry.register(smeltingDrawer);
+
 		MultipartRegistry.registerPart(DeskMultipart.class, "bagelsmore:Desk");
 		MultipartRegistry.registerPart(Paper.class, "bagelsmore:Paper");
 		MultipartRegistry.registerPart(DrawerSmall.class, "bagelsmore:DrawerSmall");
 		MultipartRegistry.registerPart(DrawerLarge.class, "bagelsmore:DrawerLarge");
 		MultipartRegistry.registerPart(SwordMount.class, "bagelsmore:SwordMount");
+		MultipartRegistry.registerPart(SmeltingDrawer.class, "bagelsmore:SmeltingDrawer");
+		MultipartRegistry.registerPart(Bookshelf.class, "bagelsmore:Bookshelf");
 		proxy.registerRenderThings();
+		proxy.registerPackets();
 	}
 
 	@EventHandler

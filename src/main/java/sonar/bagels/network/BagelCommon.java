@@ -7,6 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
+import sonar.bagels.Bagels;
 import sonar.bagels.parts.IGuiPart;
 
 public class BagelCommon implements IGuiHandler {
@@ -18,6 +22,16 @@ public class BagelCommon implements IGuiHandler {
 	}
 
 	public static void registerPackets() {
+		if (Bagels.network == null) {
+			Bagels.network = NetworkRegistry.INSTANCE.newSimpleChannel(Bagels.modid);
+		}
+
+		Bagels.network.registerMessage(PacketToDoList.Handler.class, PacketToDoList.class, 0, Side.SERVER);
+
+	}
+
+	public EntityPlayer getPlayerEntity(MessageContext ctx) {
+		return ctx.getServerHandler().playerEntity;
 	}
 
 	@Override
@@ -41,4 +55,5 @@ public class BagelCommon implements IGuiHandler {
 		}
 		return null;
 	}
+
 }

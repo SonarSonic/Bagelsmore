@@ -27,7 +27,7 @@ public class DrawerSmall extends StorageDrawer {
 
 	@Override
 	public int getInvSize() {
-		return 27;
+		return 16;
 	}
 
 	@Override

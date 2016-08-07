@@ -15,6 +15,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import sonar.bagels.parts.Bookshelf;
 import sonar.bagels.parts.DeskMultipart;
 import sonar.bagels.parts.DeskMultipart.DeskPosition;
 import sonar.bagels.parts.Paper;
@@ -39,6 +40,8 @@ public class DeskItem extends ItemMultiPart {
 			parts.forEach(part -> MultipartHelper.addPart(world, pos.offset(hoz, part.position.ordinal() - 1), part.setMiddle(pos)));
 			MultipartHelper.addPart(world, pos, new Paper(facing));
 			MultipartHelper.addPart(world, pos, new SwordMount(facing));
+			MultipartHelper.addPart(world, pos.offset(hoz), new Bookshelf(facing));
+			//MultipartHelper.addPart(world, pos.offset(hoz.getOpposite()), new Bookshelf(facing));
 			/*
 			MultipartHelper.addPart(world, pos.offset(hoz.getOpposite()), new DrawerLarge(DrawerPosition.LARGE_BOTTOM, facing));
 			MultipartHelper.addPart(world, pos.offset(hoz.getOpposite()), new DrawerSmall(DrawerPosition.SMALL_TOP, facing));

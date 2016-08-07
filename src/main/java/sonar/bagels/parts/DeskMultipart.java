@@ -170,8 +170,20 @@ public class DeskMultipart extends SidedMultipart implements INormallyOccludingP
 	}
 
 	@Override
+	public List<ItemStack> getDrops() {
+		ArrayList<ItemStack> drops = new ArrayList();
+		if (position == DeskPosition.MIDDLE) {
+			ItemStack stack = this.createItemStack();
+			if (stack != null) {
+				drops.add(stack);
+			}
+		}
+		return drops;
+	}
+
+	@Override
 	public ItemStack createItemStack() {
-		return DeskPosition.MIDDLE == position ? new ItemStack(Bagels.desk, 1) : null;
+		return new ItemStack(Bagels.desk, 1);
 	}
 
 }

@@ -19,18 +19,13 @@ public class DrawerLarge extends StorageDrawer implements IGuiPart {
 	}
 
 	@Override
-	public boolean canRenderInLayer(BlockRenderLayer layer) {
-		return false;
-	}
-
-	@Override
 	public DrawerType getDrawerType() {
 		return DrawerType.LARGE;
 	}
 
 	@Override
 	public int getInvSize() {
-		return 54;
+		return 32;
 	}
 
 	@Override

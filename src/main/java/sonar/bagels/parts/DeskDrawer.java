@@ -9,6 +9,7 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -120,6 +121,11 @@ public abstract class DeskDrawer extends InventoryMultipart implements IDeskDraw
 		super.readUpdatePacket(buf);
 		position = DrawerPosition.values()[buf.readInt()];
 		isOpen = buf.readBoolean();
+	}
+
+	@Override
+	public boolean canRenderInLayer(BlockRenderLayer layer) {
+		return false;
 	}
 
 	public static DrawerPosition getValidDrawerPosition(World world, BlockPos pos, IDeskDrawer drawer, EnumFacing front) {

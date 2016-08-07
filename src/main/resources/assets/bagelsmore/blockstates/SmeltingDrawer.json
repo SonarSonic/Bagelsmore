@@ -1,10 +1,10 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "bagelsmore:DrawerSmallModel",
+		"model": "bagelsmore:SmeltingDrawer",
 		"transform": "forge:default-block",
 		"textures":{		
-            "particle": "bagelsmore:model/table_top"
+            "particle": "bagelsmore:model/smelting_drawer_top"
         }
 	},
 	"variants": {

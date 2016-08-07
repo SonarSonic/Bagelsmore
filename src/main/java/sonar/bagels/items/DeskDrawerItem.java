@@ -16,6 +16,7 @@ import sonar.bagels.parts.DrawerLarge;
 import sonar.bagels.parts.DrawerPosition;
 import sonar.bagels.parts.DrawerSmall;
 import sonar.bagels.parts.IDeskDrawer;
+import sonar.bagels.parts.SmeltingDrawer;
 
 public abstract class DeskDrawerItem extends ItemMultiPart {
 
@@ -56,6 +57,15 @@ public abstract class DeskDrawerItem extends ItemMultiPart {
 		@Override
 		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
 			return new DrawerSmall(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
+		}
+
+	}
+
+	public static class SmeltingDrawerItem extends DeskDrawerItem {
+
+		@Override
+		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
+			return new SmeltingDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
 		}
 
 	}
