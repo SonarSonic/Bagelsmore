@@ -24,12 +24,8 @@ public class SwordRenderer extends MultipartSpecialRenderer<SwordMount> {
 			double vY = view.lastTickPosY + (view.posY - view.lastTickPosY) * (double) partialTicks;
 			double vZ = view.lastTickPosZ + (view.posZ - view.lastTickPosZ) * (double) partialTicks;
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(part.getPos().getX() - vX, part.getPos().getY() - vY, part.getPos().getZ() - vZ);
-			//GlStateManager.translate(part.getPos().getX(), part.getPos().getY(), part.getPos().getZ());
-			
+			GlStateManager.translate(part.getPos().getX() - vX, part.getPos().getY() - vY, part.getPos().getZ() - vZ);			
 			RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-
-			//GL11.glTranslated(part.face.getFrontOffsetX(), 0, part.face.getFrontOffsetZ());
 			GL11.glRotated(part.face.getHorizontalAngle(), 0, 1, 0);
 			switch(part.face){
 			case EAST:
@@ -47,7 +43,6 @@ public class SwordRenderer extends MultipartSpecialRenderer<SwordMount> {
 			default:
 				break;			
 			}
-
 			GL11.glScaled(1, 1, 1);
 			GL11.glRotated(-45, 0, 0, 1);
 			GL11.glRotated(-90, 0, 0, 1);

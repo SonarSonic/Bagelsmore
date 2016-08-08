@@ -12,24 +12,90 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import sonar.bagels.parts.DeskMultipart.DeskPosition;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.DrawerType;
+import sonar.bagels.utils.IDeskDrawer;
 
-public abstract class DeskDrawer extends InventoryMultipart implements IDeskDrawer {
+public abstract class DeskDrawer extends InventoryMultipart implements IDeskDrawer, ITickable {
 
 	private DrawerPosition position;
 	private boolean isOpen;
+	private DeskMultipart host;
+	public boolean shouldRenderSpecials = true;
+	public boolean wasLoaded = false;
 
 	public DeskDrawer() {
 		super();
 	}
 
+	public void update() {
+		if (!this.getWorld().isRemote && !this.wasLoaded) {
+			this.onAdded();
+			wasLoaded = true;
+		}
+	}
+
 	public DeskDrawer(DrawerPosition position, EnumFacing face) {
 		super(face);
 		this.position = position;
+	}
+
+	public DeskDrawer setHost(DeskMultipart host) {
+		host.addSlave(this);
+		return this;
+	}
+
+	public void alertHost() {
+		if (!this.getWorld().isRemote && this.host != null) {
+			host.onSlaveChanged();
+		}
+	}
+
+	public void onSlaveChanged() {
+		boolean oldValue = shouldRenderSpecials;
+		if (this.isDrawerOpen()) {
+			shouldRenderSpecials = true;
+		} else {
+			DrawerPosition aboveSlot = this.getDrawerPosition().getAboveSlot();
+			if (aboveSlot != DrawerPosition.NONE) {
+				IDeskDrawer drawer = DeskMultipart.getDrawerInPosition(host, aboveSlot);
+				if (drawer != null ) {
+					shouldRenderSpecials = false;
+				}else{
+					shouldRenderSpecials = true;
+				}
+			} else {
+				shouldRenderSpecials = true;
+			}
+		}
+		//System.out.println(shouldRenderSpecials);
+		if (oldValue != this.shouldRenderSpecials) {
+			this.sendUpdatePacket();
+		}
+	}
+
+	public void onAdded() {
+		if (this.host == null) {
+			DeskMultipart host = DeskMultipart.getDeskPart(getWorld(), getPos());
+			if (host != null) {
+				this.host = host;
+				host.addSlave(this);
+			}
+		}
+	}
+
+	public void onRemoved() {
+		super.onRemoved();
+		DeskMultipart host = this.host == null ? DeskMultipart.getDeskPart(getWorld(), getPos()) : this.host;
+		if (host != null) {
+			host.removeSlave(this);
+		}
 	}
 
 	@Override
@@ -86,6 +152,7 @@ public abstract class DeskDrawer extends InventoryMultipart implements IDeskDraw
 		if (hit.sideHit == face || player.isSneaking()) {
 			if (!this.getWorld().isRemote) {
 				this.isOpen = !isOpen;
+				this.alertHost();
 				this.sendUpdatePacket();
 			} else {
 				this.getWorld().playSound(player, this.getPos(), SoundEvents.BLOCK_FENCE_GATE_CLOSE, SoundCategory.NEUTRAL, 0.3F, 0.1F);
@@ -112,6 +179,7 @@ public abstract class DeskDrawer extends InventoryMultipart implements IDeskDraw
 	@Override
 	public void writeUpdatePacket(PacketBuffer buf) {
 		super.writeUpdatePacket(buf);
+		buf.writeBoolean(this.shouldRenderSpecials);
 		buf.writeInt(position.ordinal());
 		buf.writeBoolean(isOpen);
 	}
@@ -119,6 +187,7 @@ public abstract class DeskDrawer extends InventoryMultipart implements IDeskDraw
 	@Override
 	public void readUpdatePacket(PacketBuffer buf) {
 		super.readUpdatePacket(buf);
+		shouldRenderSpecials = buf.readBoolean();
 		position = DrawerPosition.values()[buf.readInt()];
 		isOpen = buf.readBoolean();
 	}

@@ -6,6 +6,7 @@ import io.netty.buffer.ByteBuf;
 import mcmultipart.raytrace.PartMOP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
@@ -23,12 +24,13 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import sonar.bagels.Bagels;
 import sonar.bagels.client.gui.GuiTodoList;
 import sonar.bagels.common.containers.ContainerTodoList;
+import sonar.bagels.utils.IGuiPart;
+import sonar.bagels.utils.TodoList;
 
-public class Paper extends SidedMultipart implements IGuiPart {
+public class Paper extends BagelsMultipart implements IGuiPart {
 
 	public boolean wasSet = false;
-	public String listName = "Todo List";
-	public String[] entries = new String[10];
+	public TodoList list = new TodoList();
 
 	public Paper() {
 		super();
@@ -62,14 +64,27 @@ public class Paper extends SidedMultipart implements IGuiPart {
 
 	@Override
 	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit) {
-		if (!this.getWorld().isRemote)
-			player.openGui(Bagels.instance, this.getHashedID(), this.getWorld(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+		if (!this.getWorld().isRemote) {
+			if (heldItem != null && heldItem.getItem() == Bagels.clipboardEmpty) {
+				ItemStack stack = new ItemStack(Bagels.clipboard, 1);
+				list.writeListToStack(stack);
+				player.setHeldItem(hand, stack);
+			} else {
+				player.openGui(Bagels.instance, this.getHashedID(), this.getWorld(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+			}
+		}
+		return true;
+	}
+
+	public boolean shouldDropItem() {
 		return true;
 	}
 
 	@Override
 	public ItemStack createItemStack() {
-		return null;
+		ItemStack stack = new ItemStack(Items.PAPER, 1);
+		list.writeListToStack(stack);
+		return stack;
 	}
 
 	@Override
@@ -79,85 +94,39 @@ public class Paper extends SidedMultipart implements IGuiPart {
 
 	@Override
 	public Object getServerElement(EntityPlayer player) {
-		return new ContainerTodoList(this);
+		return new ContainerTodoList(player, list);
 	}
 
 	@Override
 	public Object getClientElement(EntityPlayer player) {
-		return new GuiTodoList(this);
+		return new GuiTodoList.Block(this, player, list);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setString("listName", listName);
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < entries.length; i++) {
-			String entry = entries[i];
-			if (entry != null && !entry.isEmpty()) {
-				list.appendTag(new NBTTagString(entry));
-			}
-		}
-		tag.setTag("entries", list);
+		list.writeToNBT(tag);
 		return tag;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		listName = tag.getString("listName");
-		NBTTagList list = tag.getTagList("entries", 8);
-		for (int i = 0; i < list.tagCount(); i++) {
-			String entry = list.getStringTagAt(i);
-			entries[i] = entry;
-		}
-	}
-
-	public void writeUpdatePacket(ByteBuf buf, boolean isClient) {
-		ByteBufUtils.writeUTF8String(buf, listName);
-		for (int i = 0; i < entries.length; i++) {
-			String entry = entries[i];
-			if (entry != null) {
-				ByteBufUtils.writeUTF8String(buf, entry);
-			}
-		}
-	}
-
-	public void readUpdatePacket(ByteBuf buf, boolean isClient) {
-		listName = ByteBufUtils.readUTF8String(buf);
-		int offset = 0;
-		for (int i = 0; i < entries.length; i++) {
-			if (buf.isReadable()) {
-				String entry = ByteBufUtils.readUTF8String(buf);
-				entries[i - offset] = entry;
-				if (entry.isEmpty() || entry.equals("")) {
-					offset++;
-				}
-			} else {
-				break;
-			}
-		}
-		if (isClient) {
-			GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
-			if (screen instanceof GuiTodoList) {
-				((GuiTodoList) screen).reset(false);
-			}
-			this.wasSet = true;
-		} else {
-			sendUpdatePacket();
-		}
+		list.readFromNBT(tag);
 	}
 
 	@Override
 	public void writeUpdatePacket(PacketBuffer buf) {
 		super.writeUpdatePacket(buf);
-		this.writeUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient());
+		list.writeUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient());
 	}
 
 	@Override
 	public void readUpdatePacket(PacketBuffer buf) {
 		super.readUpdatePacket(buf);
-		this.readUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient());
+		if (list.readUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient())) {
+			sendUpdatePacket();
+		}
 	}
 
 }

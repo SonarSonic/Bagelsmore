@@ -1,4 +1,4 @@
-package sonar.bagels.parts;
+package sonar.bagels.utils;
 
 public enum DrawerPosition {
 	LARGE_BOTTOM, LARGE_TOP, SMALL_BOTTOM, SMALL_MIDDLE, SMALL_TOP, NONE;
@@ -24,6 +24,18 @@ public enum DrawerPosition {
 			break;
 		}
 		return p / 2;
+	}
+
+	public DrawerPosition getAboveSlot() {
+		switch (this) {
+		case SMALL_BOTTOM:
+			return SMALL_MIDDLE;
+		case SMALL_MIDDLE:
+		case LARGE_BOTTOM:
+			return SMALL_TOP;
+		default:
+			return NONE;
+		}
 	}
 
 	public boolean isValidPosition() {

@@ -13,17 +13,27 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import sonar.bagels.Bagels;
+import sonar.bagels.utils.DeskType;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.IDeskDrawer;
+import sonar.bagels.utils.IDeskPart;
+import sonar.bagels.utils.TodoList;
 
-public class DeskMultipart extends SidedMultipart implements INormallyOccludingPart {
+public abstract class DeskMultipart extends BagelsMultipart implements INormallyOccludingPart {
+
+	public ArrayList<IDeskDrawer> drawers = new ArrayList();
 
 	public static enum DeskPosition implements IStringSerializable {
 		LEFT, MIDDLE, RIGHT;
@@ -35,22 +45,130 @@ public class DeskMultipart extends SidedMultipart implements INormallyOccludingP
 	}
 
 	public static final PropertyEnum<DeskPosition> POS = PropertyEnum.<DeskPosition>create("table", DeskPosition.class);
+	public DeskType type;
 	public DeskPosition position;
 	public BlockPos middle;
 	public boolean doHarvest = false;
+
+	public static class Fancy extends DeskMultipart {
+
+		public Fancy() {
+			super();
+		}
+
+		public Fancy(DeskPosition position, EnumFacing face) {
+			super(DeskType.FANCY, position, face);
+		}
+
+		@Override
+		public ItemStack createItemStack() {
+			return new ItemStack(Bagels.deskFancy);
+		}
+
+	}
+
+	public static class Stone extends DeskMultipart {
+
+		public Stone() {
+			super();
+		}
+
+		public Stone(DeskPosition position, EnumFacing face) {
+			super(DeskType.STONE, position, face);
+		}
+
+		@Override
+		public ItemStack createItemStack() {
+			return new ItemStack(Bagels.deskStone);
+		}
+
+	}
+
+	public static class Treated extends DeskMultipart {
+
+		public Treated() {
+			super();
+		}
+
+		public Treated(DeskPosition position, EnumFacing face) {
+			super(DeskType.TREATED, position, face);
+		}
+
+		@Override
+		public ItemStack createItemStack() {
+			return new ItemStack(Bagels.deskTreated);
+		}
+
+	}
 
 	public DeskMultipart() {
 		super();
 	}
 
-	public DeskMultipart(DeskPosition position, EnumFacing face) {
+	public DeskMultipart(DeskType type, DeskPosition position, EnumFacing face) {
 		super(face);
+		this.type = type;
 		this.position = position;
 	}
 
 	public DeskMultipart setMiddle(BlockPos pos) {
 		middle = pos;
 		return this;
+	}
+
+	public void addSlave(IDeskDrawer drawer) {
+		if (!drawers.contains(drawer)) {
+			drawers.add(drawer);
+			this.onSlaveChanged();
+		}
+	}
+
+	public void removeSlave(IDeskDrawer drawer) {
+		drawers.remove(drawer);
+		this.onSlaveChanged();
+	}
+
+	public static DeskMultipart createDeskMultipart(DeskType type, DeskPosition position, EnumFacing face) {
+		switch (type) {
+		case FANCY:
+			return new DeskMultipart.Fancy(position, face);
+		case STONE:
+			return new DeskMultipart.Stone(position, face);
+		case TREATED:
+			return new DeskMultipart.Treated(position, face);
+		default:
+			return null;
+
+		}
+	}
+
+	@Override
+	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit) {
+		if (!this.getWorld().isRemote) {
+			if (heldItem != null) {
+				if (position == DeskPosition.MIDDLE && hit.sideHit == EnumFacing.UP) {
+					if (heldItem.getItem() == Items.PAPER) {
+						Paper multipart = new Paper(this.face);
+						if (MultipartHelper.canAddPart(this.getWorld(), this.getPos(), multipart)) {
+							if (heldItem.hasTagCompound()) {
+								multipart.list = TodoList.getListFromStack(heldItem);
+							}
+							MultipartHelper.addPart(this.getWorld(), this.getPos(), multipart);
+							heldItem.stackSize--;
+						}
+					} else if (heldItem.getItem() == Bagels.clipboard) {
+						Paper multipart = new Paper(this.face);
+						if (MultipartHelper.canAddPart(this.getWorld(), this.getPos(), multipart)) {
+							multipart.list = TodoList.getListFromStack(heldItem);
+							MultipartHelper.addPart(this.getWorld(), this.getPos(), multipart);
+							player.setHeldItem(hand, new ItemStack(Bagels.clipboardEmpty, 1));
+						}
+					}
+					
+				}
+			}
+		}
+		return true;
 	}
 
 	public void breakDesk(EntityPlayer player, PartMOP hit) {
@@ -85,14 +203,27 @@ public class DeskMultipart extends SidedMultipart implements INormallyOccludingP
 			breakDesk(player, hit);
 			return;
 		}
-		ArrayList<IMultipart> toDelete = new ArrayList();
+		ArrayList<BagelsMultipart> toDelete = new ArrayList();
 		for (IMultipart part : this.getContainer().getParts()) {
-			if (part != this && part instanceof IDeskPart) {
-				toDelete.add(part);
+			if (part != this && part instanceof BagelsMultipart) {
+				toDelete.add((BagelsMultipart) part);
 			}
 		}
-		toDelete.forEach(part -> part.harvest(player, hit));
+		toDelete.forEach(part -> part.defaultHarvest(player, hit));
 		super.harvest(player, hit);
+	}
+
+	public static IDeskDrawer getDrawerInPosition(DeskMultipart desk, DrawerPosition position) {
+		for (IDeskDrawer drawer : desk.drawers) {
+			if (!drawer.wasRemoved() && drawer.getDrawerPosition() == position) {
+				return drawer;
+			}
+		}
+		return null;
+	}
+
+	public void onSlaveChanged() {
+		drawers.forEach(drawer -> drawer.onSlaveChanged());
 	}
 
 	public static DeskMultipart getDeskPart(World world, BlockPos pos) {
@@ -111,7 +242,7 @@ public class DeskMultipart extends SidedMultipart implements INormallyOccludingP
 
 	@Override
 	public void addOcclusionBoxes(List<AxisAlignedBB> boxes) {
-		boxes.add(new AxisAlignedBB(0, 1 - (0.0625 * 2), 0, 1, 1 - (0.0625 / 2), 1));
+		boxes.add(new AxisAlignedBB(0, 1 - (0.0625 * 2), 0, 1, position == DeskPosition.LEFT ? 1 - (0.0625) : 1 - (0.0625 / 2), 1));
 
 		if (position != DeskPosition.MIDDLE) {
 			boxes.add(new AxisAlignedBB(0, 0, 0, 1, 0.0625 / 2, 1));
@@ -180,10 +311,4 @@ public class DeskMultipart extends SidedMultipart implements INormallyOccludingP
 		}
 		return drops;
 	}
-
-	@Override
-	public ItemStack createItemStack() {
-		return new ItemStack(Bagels.desk, 1);
-	}
-
 }

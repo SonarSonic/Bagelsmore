@@ -1,4 +1,16 @@
-﻿item.Desk.name=Desk
+﻿//Bagelsmore
+
+item.DeskFancy.name=Fancy Desk
+item.DeskStone.name=Stone Desk
+item.DeskTreated.name=Treated Desk
 item.SmeltingDrawer.name=Smelting Drawer
 item.DrawerSmall.name=Storage Drawer
 item.DrawerLarge.name=Large Storage Drawer
+item.RecyclingDrawer.name=Recycling Drawer
+item.FluidDrawer.name=Fluid Drawer
+item.Clipboard.name=Clipboard
+item.ClipboardEmpty.name=Clipboard
+tile.FancyPlanks.name=Fancy Planks
+tile.Bookshelf.name=Bookshelf
+tile.TreatedPlanks=Treated Planks
+tile.FancyStone.name=Fancy Stone

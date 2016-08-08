@@ -1,5 +1,4 @@
 {
-    "parent":"block/block",
     "textures": {
         "0": "bagelsmore:model/drawer_large",
         "1": "bagelsmore:model/drawer",

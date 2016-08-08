@@ -1,4 +1,4 @@
-package sonar.bagels.parts;
+package sonar.bagels.utils;
 
 public enum DrawerType {
 	LARGE(8 * 0.0625, 12 * 0.062), SMALL(4 * 0.0625, 12 * 0.0625);

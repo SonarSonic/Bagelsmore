@@ -1,4 +1,4 @@
-package sonar.bagels.parts;
+package sonar.bagels.utils;
 
 public interface IDeskDrawer extends IDeskPart {
 
@@ -11,4 +11,7 @@ public interface IDeskDrawer extends IDeskPart {
 	public void setDrawerPosition(DrawerPosition position);
 
 	public DrawerType getDrawerType();
+
+	public void onSlaveChanged();
+
 }

@@ -5,13 +5,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.items.ItemStackHandler;
+import sonar.bagels.utils.IInventorySync;
 
 public class BasicInventory extends ItemStackHandler implements IInventory {
 	final InventoryMultipart multipart;
 
 	public BasicInventory(InventoryMultipart multipart, int size) {
 		this.multipart = multipart;
-		this.stacks = new ItemStack[size];
+		setSize(size);
+	}
+
+	public ItemStack[] getStacks() {
+		return stacks;
 	}
 
 	@Override
@@ -78,6 +83,7 @@ public class BasicInventory extends ItemStackHandler implements IInventory {
 		if ((itemstack != null) && (itemstack.stackSize > getInventoryStackLimit())) {
 			itemstack.stackSize = getInventoryStackLimit();
 		}
+
 	}
 
 	public int getInventoryStackLimit() {
@@ -99,13 +105,22 @@ public class BasicInventory extends ItemStackHandler implements IInventory {
 	}
 
 	public int getField(int id) {
+		if (multipart instanceof IInventorySync) {
+			return ((IInventorySync) multipart).getField(id);
+		}
 		return 0;
 	}
 
 	public void setField(int id, int value) {
+		if (multipart instanceof IInventorySync) {
+			((IInventorySync) multipart).setField(id, value);
+		}
 	}
 
 	public int getFieldCount() {
+		if (multipart instanceof IInventorySync) {
+			return ((IInventorySync) multipart).getFieldCount();
+		}
 		return 0;
 	}
 

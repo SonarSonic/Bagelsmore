@@ -7,6 +7,9 @@ import net.minecraft.util.EnumFacing;
 import sonar.bagels.Bagels;
 import sonar.bagels.client.gui.GuiStorageDrawer;
 import sonar.bagels.common.containers.ContainerStorageDrawer;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.DrawerType;
+import sonar.bagels.utils.IGuiPart;
 
 public class DrawerLarge extends StorageDrawer implements IGuiPart {
 

@@ -1,10 +1,11 @@
 {
+    
     "textures":{        
       "paper": "bagelsmore:model/paper"
     },
     "elements": [
         {
-            "name": "Paper",
+            "name": "Parchment",
             "from": [ 5.0, 15.5, 3.0 ], 
             "to": [ 11.0, 15.6, 11.0 ], 
             "faces": {

@@ -1,4 +1,4 @@
-package sonar.bagels.parts;
+package sonar.bagels.utils;
 
 import net.minecraft.entity.player.EntityPlayer;
 

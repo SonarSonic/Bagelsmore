@@ -1,106 +1,18 @@
 {
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
+    "parent":"block/block",    
+    "display": {
+        "gui": {
+            "rotation": [ 10, 180, 0 ],
+            "translation": [ 0, -9, 8],
+            "scale":[ 0.8, 0.8, 0.8 ]
+        }
+    },
     "textures": {
         "0": "bagelsmore:model/books_new",
         "1": "bagelsmore:model/table_dark",
         "2": "bagelsmore:model/table_middle"
     },
     "elements": [
-        {
-            "name": "Book6",
-            "from": [ 1.7, 13.8, 11.0 ], 
-            "to": [ 2.7, 19.8, 15.0 ], 
-            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "z", "angle": -22.5 },
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 0.0, 3.8, 3.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 2.0, 3.0 ] },
-                "south": { "texture": "#0", "uv": [ 4.0, 1.0, 5.0, 4.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 0.0, 4.0, 3.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 0.0, 5.0, 2.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 0.0, 5.0, 2.0 ], "rotation": 180 }
-            }
-        },
-        {
-            "name": "Book3",
-            "from": [ 9.4, 15.5, 11.0 ], 
-            "to": [ 10.9, 21.5, 15.0 ], 
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 0.0, 3.8, 3.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 0.0, 2.0, 3.0 ] },
-                "south": { "texture": "#0", "uv": [ 4.0, 1.0, 5.0, 4.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 0.0, 4.0, 3.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 0.0, 5.0, 2.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 0.0, 5.0, 2.0 ], "rotation": 180 }
-            }
-        },
-        {
-            "name": "Book2",
-            "from": [ 11.0, 15.5, 11.0 ], 
-            "to": [ 12.0, 21.5, 15.0 ], 
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 4.0, 3.8, 7.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 4.0, 2.0, 7.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 5.0, 4.0, 7.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 4.0, 4.0, 7.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ], "rotation": 180 }
-            }
-        },
-        {
-            "name": "Book4",
-            "from": [ 8.8, 15.5, 11.0 ], 
-            "to": [ 9.3, 21.5, 15.0 ], 
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 4.0, 3.8, 7.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 4.0, 2.0, 7.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 5.0, 4.0, 7.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 4.0, 4.0, 7.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ], "rotation": 180 }
-            }
-        },
-        {
-            "name": "Book7",
-            "from": [ 5.4, 17.1, 11.0 ], 
-            "to": [ 6.4, 23.1, 15.0 ], 
-            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "z", "angle": 22.5 },
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 8.0, 3.8, 11.0 ], "rotation": 90 },
-                "east": { "texture": "#0", "uv": [ 0.0, 8.0, 2.0, 11.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 9.0, 4.0, 11.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 8.0, 4.0, 11.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 8.0, 5.0, 10.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 8.0, 5.0, 10.0 ], "rotation": 180 }
-            }
-        },
-        {
-            "name": "Book5",
-            "from": [ 2.8, 14.3, 11.0 ], 
-            "to": [ 3.8, 20.3, 15.0 ], 
-            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "z", "angle": -22.5 },
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 12.0, 3.8, 15.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 12.0, 2.0, 15.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 13.0, 4.0, 15.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 12.0, 4.0, 15.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 12.0, 5.0, 14.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 12.0, 5.0, 14.0 ] }
-            }
-        },
-        {
-            "name": "Book1",
-            "from": [ 16.6, 12.5, 11.0 ], 
-            "to": [ 17.1, 18.5, 15.0 ], 
-            "rotation": { "origin": [ 8.0, 8.0, 8.0 ], "axis": "z", "angle": 22.5 },
-            "faces": {
-                "north": { "texture": "#0", "uv": [ 4.0, 4.0, 3.8, 7.0 ] },
-                "east": { "texture": "#0", "uv": [ 0.0, 4.0, 2.0, 7.0 ] },
-                "south": { "texture": "#0", "uv": [ 5.0, 5.0, 4.0, 7.0 ] },
-                "west": { "texture": "#0", "uv": [ 2.0, 4.0, 4.0, 7.0 ] },
-                "up": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ] },
-                "down": { "texture": "#0", "uv": [ 4.0, 4.0, 5.0, 6.0 ], "rotation": 180 }
-            }
-        },
         {
             "name": "RightBack",
             "from": [ 0.5, 15.5, 15.0 ], 

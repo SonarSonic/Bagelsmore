@@ -1,5 +1,12 @@
 {
     "parent":"block/block",
+    "display": {
+        "gui": {
+            "rotation": [ 30, 225, 0 ],
+            "translation": [ 0, -6, 0],
+            "scale":[ 0.625, 0.625, 0.625 ]
+        }
+    },
     "textures": {
         "table": "bagelsmore:model/table_top",
         "0": "bagelsmore:model/table_dark",

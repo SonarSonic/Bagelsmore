@@ -13,10 +13,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import sonar.bagels.parts.DeskDrawer;
 import sonar.bagels.parts.DrawerLarge;
-import sonar.bagels.parts.DrawerPosition;
 import sonar.bagels.parts.DrawerSmall;
-import sonar.bagels.parts.IDeskDrawer;
+import sonar.bagels.parts.FluidDrawer;
+import sonar.bagels.parts.RecyclingDrawer;
 import sonar.bagels.parts.SmeltingDrawer;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.IDeskDrawer;
 
 public abstract class DeskDrawerItem extends ItemMultiPart {
 
@@ -39,7 +41,7 @@ public abstract class DeskDrawerItem extends ItemMultiPart {
 
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -66,6 +68,24 @@ public abstract class DeskDrawerItem extends ItemMultiPart {
 		@Override
 		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
 			return new SmeltingDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
+		}
+
+	}
+
+	public static class RecyclingDrawerItem extends DeskDrawerItem {
+
+		@Override
+		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
+			return new RecyclingDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
+		}
+
+	}
+
+	public static class FluidDrawerItem extends DeskDrawerItem {
+
+		@Override
+		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
+			return new FluidDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
 		}
 
 	}

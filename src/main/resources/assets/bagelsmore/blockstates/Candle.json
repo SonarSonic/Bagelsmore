@@ -1,0 +1,27 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "bagelsmore:Candle",
+		"transform": "forge:default-block",
+		"textures":{		
+            "particle": "bagelsmore:model/gold_handle"
+        }
+	},
+	"variants": {
+		"inventory": [{}],
+		"facing": {
+			"north": {
+				
+			},
+			"south": {
+				"y": 180
+			},
+			"west": {
+				"y": 270
+			},
+			"east": {
+				"y": 90
+			}
+		}
+	}
+}

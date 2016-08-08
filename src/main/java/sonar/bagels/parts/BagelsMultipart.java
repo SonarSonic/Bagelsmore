@@ -25,17 +25,18 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
 import scala.actors.threadpool.Arrays;
+import sonar.bagels.utils.IDeskPart;
 
-public abstract class SidedMultipart extends Multipart implements INormallyOccludingPart, IDeskPart, IWorldNameable {
+public abstract class BagelsMultipart extends Multipart implements INormallyOccludingPart, IDeskPart, IWorldNameable {
 
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-
+	public boolean wasRemoved = false;
 	public EnumFacing face;
 
-	public SidedMultipart() {
+	public BagelsMultipart() {
 	}
 
-	public SidedMultipart(EnumFacing face) {
+	public BagelsMultipart(EnumFacing face) {
 		this.face = face;
 	}
 
@@ -43,20 +44,38 @@ public abstract class SidedMultipart extends Multipart implements INormallyOcclu
 		return face;
 	}
 
+	public void onRemoved() {
+		super.onRemoved();
+		wasRemoved = true;
+	}
+
+	public boolean wasRemoved() {
+		return wasRemoved;
+	}
+
+	public void defaultHarvest(EntityPlayer player, PartMOP hit) {
+		super.harvest(player, hit);
+	}
+
 	@Override
 	public List<ItemStack> getDrops() {
 		ArrayList<ItemStack> drops = new ArrayList();
-		ItemStack stack = this.createItemStack();
-		if (stack != null) {
-			drops.add(stack);
+		if (shouldDropItem()) {
+			ItemStack stack = this.createItemStack();
+			if (stack != null) {
+				drops.add(stack);
+			}
 		}
 		return drops;
 
 	}
 
+	public boolean shouldDropItem() {
+		return true;
+	}
+
 	@Override
 	public ItemStack getPickBlock(EntityPlayer player, PartMOP hit) {
-
 		return createItemStack();
 	}
 
@@ -125,7 +144,7 @@ public abstract class SidedMultipart extends Multipart implements INormallyOcclu
 
 	public float getHardness(PartMOP hit) {
 
-		return 1.0F;
+		return 0.3F;
 	}
 
 	public Material getMaterial() {

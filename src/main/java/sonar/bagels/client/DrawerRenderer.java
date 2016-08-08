@@ -6,6 +6,7 @@ import mcmultipart.client.multipart.MultipartSpecialRenderer;
 import mcmultipart.client.multipart.MultipartStateMapper;
 import mcmultipart.multipart.PartState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -15,13 +16,21 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing.AxisDirection;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import sonar.bagels.parts.DeskDrawer;
+import sonar.bagels.parts.FluidDrawer;
+import sonar.bagels.parts.SmeltingDrawer;
 import sonar.bagels.parts.StorageDrawer;
+import sonar.bagels.utils.DrawerPosition;
 
 //TWEAKED FAST MSR
 public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
@@ -80,52 +89,103 @@ public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
 		tessellator.draw();
 
 		RenderHelper.enableStandardItemLighting();
+		if (part.isDrawerOpen() || part.shouldRenderSpecials) {
+			if (part instanceof DeskDrawer) {
+				GlStateManager.translate(part.getPos().getX(), part.getPos().getY(), part.getPos().getZ());
 
-		if (part instanceof StorageDrawer) {
-			GlStateManager.translate(part.getPos().getX(), part.getPos().getY(), part.getPos().getZ());
+				// GL11.glRotated(part.face.getHorizontalAngle(), 0, 1, 0);
+				// GL11.glTranslated(part.face.getFrontOffsetX(), 0,
+				// part.face.getFrontOffsetZ());
+				switch (part.face) {
 
-			//GL11.glRotated(part.face.getHorizontalAngle(), 0, 1, 0);
-			//GL11.glTranslated(part.face.getFrontOffsetX(), 0, part.face.getFrontOffsetZ());
-			switch(part.face){
-			
-			case EAST:
-				GL11.glRotated(-90, 0, 1, 0);
-				GL11.glTranslated(0, 0, -1);
-				break;
-			case NORTH:
-				//GL11.glRotated(part.face.getHorizontalAngle(), 0, -1, 0);
-				break;
-			case SOUTH:
-				GL11.glRotated(180, 0, 1, 0);
-				GL11.glTranslated(-1, 0, -1);
-				break;
-			case WEST:
-				GL11.glRotated(90, 0, 1, 0);
-				GL11.glTranslated(-1, 0, 0);
-				break;
-			default:
-				break;
-			
-			}
-			
-			RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-			GlStateManager.scale(0.5, 0.5, 0.5);
-			GlStateManager.translate(0.0625*8.5, 0.0625*4, 0.0625*5);
-			StorageDrawer drawer = (StorageDrawer) part;
-			for (int i = 0; i < drawer.getInvSize(); i++) {
-				int layer = i / 16;
-				int row = (i - (layer * 16)) / 4;
-				int colomn = i - (layer * 16) - (row * 4);
-				GlStateManager.translate(row * (0.0625 * 5), layer*0.0625 * 4.5, colomn * (0.0625 * 5));
-				ItemStack stack = drawer.inv.getStackInSlot(i);
-				if (stack != null && stack.stackSize != 0) {
-					renderItem.renderItem(stack, TransformType.GROUND);
+				case EAST:
+					GL11.glRotated(-90, 0, 1, 0);
+					GL11.glTranslated(0, 0, -1);
+					break;
+				case NORTH:
+					// GL11.glRotated(part.face.getHorizontalAngle(), 0, -1, 0);
+					break;
+				case SOUTH:
+					GL11.glRotated(180, 0, 1, 0);
+					GL11.glTranslated(-1, 0, -1);
+					break;
+				case WEST:
+					GL11.glRotated(90, 0, 1, 0);
+					GL11.glTranslated(-1, 0, 0);
+					break;
+				default:
+					break;
+
 				}
-				GlStateManager.translate(-(row * (0.0625 * 5)), -layer*0.0625 * 4.5, -(colomn * (0.0625 * 5)));
+
+				RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+				GlStateManager.scale(0.5, 0.5, 0.5);
+				GlStateManager.translate(0.0625 * 8.5, 0.0625 * 4, 0.0625 * 5);
+
+				if (part instanceof StorageDrawer) {
+					StorageDrawer drawer = (StorageDrawer) part;
+					for (int i = 0; i < drawer.getInvSize(); i++) {
+						GlStateManager.pushMatrix();
+						int layer = i / 16;
+						int row = (i - (layer * 16)) / 4;
+						int colomn = i - (layer * 16) - (row * 4);
+						GlStateManager.translate(row * (0.0625 * 5), layer * 0.0625 * 4.5, colomn * (0.0625 * 5));
+						ItemStack stack = drawer.inv.getStackInSlot(i);
+						if (stack != null && stack.stackSize != 0) {
+							renderItem.renderItem(stack, TransformType.GROUND);
+						}
+						GlStateManager.popMatrix();
+					}
+				} else {
+					if (!(part instanceof FluidDrawer)) {
+						GlStateManager.pushAttrib();
+						GL11.glDisable(GL11.GL_LIGHTING);
+						GlStateManager.rotate(90, 1, 0, 0);
+						GlStateManager.translate(0, 0, -0.0625 * 5);
+						this.drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, part instanceof SmeltingDrawer ? FluidRegistry.LAVA.getStill() : new ResourceLocation("minecraft:blocks/portal"), 1.45, 1.45);
+
+						GlStateManager.popAttrib();
+					} else {
+						FluidTank[] tanks = ((FluidDrawer) part).tanks;
+						for (int i = 0; i < tanks.length; i++) {
+							FluidTank tank = tanks[i];
+							if (tank.getFluidAmount() != 0 && tank.getFluid() != null) {
+								GlStateManager.pushAttrib();
+								GlStateManager.pushMatrix();
+								GL11.glDisable(GL11.GL_LIGHTING);
+								GL11.glDisable(GL11.GL_BLEND);
+								ResourceLocation fluid = tank.getFluid().getFluid().getStill();
+								double ySize = (-0.0625 * 6.5) * ((double) tank.getFluidAmount() / tank.getCapacity());
+								GlStateManager.translate(0.0, 0, -0.2);
+								this.drawTexturedModalRect(i == 1 ? -0.0625 * 2 - 0.05 : 0.0625 * 12 - 0.05, -0.0625 * 0.5, fluid, 0.4, 0.0625 * 3.5 - ySize);
+								GlStateManager.translate(0.0, 0, 0.18);
+								GlStateManager.rotate(90, 1, 0, 0);
+								GlStateManager.translate(i == 1 ? 0.0625 : 0.0625 * 11, 0, -0.0625 * 3 + ySize);
+								this.drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, fluid, 0.7, 1.5);
+								GlStateManager.popMatrix();
+								GlStateManager.popAttrib();
+
+							}
+						}
+					}
+				}
 			}
 		}
 		GlStateManager.popMatrix();
-		
 
+	}
+
+	public void drawTexturedModalRect(double xCoord, double yCoord, ResourceLocation location, double widthIn, double heightIn) {
+		TextureAtlasSprite textureSprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+		if (textureSprite != null) {
+			Tessellator tessellator = Tessellator.getInstance();
+			VertexBuffer vertexbuffer = tessellator.getBuffer();
+			vertexbuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+			vertexbuffer.pos((double) (xCoord + 0), (double) (yCoord + heightIn), (double) 0).tex((double) textureSprite.getMinU(), (double) textureSprite.getMaxV()).endVertex();
+			vertexbuffer.pos((double) (xCoord + widthIn), (double) (yCoord + heightIn), (double) 0).tex((double) textureSprite.getMaxU(), (double) textureSprite.getMaxV()).endVertex();
+			vertexbuffer.pos((double) (xCoord + widthIn), (double) (yCoord + 0), (double) 0).tex((double) textureSprite.getMaxU(), (double) textureSprite.getMinV()).endVertex();
+			vertexbuffer.pos((double) (xCoord + 0), (double) (yCoord + 0), (double) 0).tex((double) textureSprite.getMinU(), (double) textureSprite.getMinV()).endVertex();
+			tessellator.draw();
+		}
 	}
 }

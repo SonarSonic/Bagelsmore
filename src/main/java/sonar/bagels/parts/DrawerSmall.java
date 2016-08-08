@@ -4,6 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import sonar.bagels.Bagels;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.DrawerType;
 
 public class DrawerSmall extends StorageDrawer {
 

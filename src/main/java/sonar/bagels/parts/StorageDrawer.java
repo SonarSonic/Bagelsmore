@@ -8,6 +8,8 @@ import net.minecraft.util.EnumHand;
 import sonar.bagels.Bagels;
 import sonar.bagels.client.gui.GuiStorageDrawer;
 import sonar.bagels.common.containers.ContainerStorageDrawer;
+import sonar.bagels.utils.DrawerPosition;
+import sonar.bagels.utils.IGuiPart;
 
 public abstract class StorageDrawer extends DeskDrawer implements IGuiPart {
 

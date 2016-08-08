@@ -2,13 +2,24 @@
 	"forge_marker": 1,
 	"defaults": {
 		"model": "bagelsmore:Bookshelf",
-		"transform": "forge:default-block",
 		"textures":{		
-            "particle": "bagelsmore:model/table_dark"
+            "particle": "bagelsmore:model/table_dark",
+            "0": "bagelsmore:model/books_new"
         }
 	},
 	"variants": {
-		"inventory": [{}],
+		"inventory": [{		          
+            "submodel": {
+                "Book1": {"model": "bagelsmore:book/Book2"},
+                "Book2": {"model": "bagelsmore:book/Book3"},
+                "Book3": {"model": "bagelsmore:book/Book4"},
+                "Book4": {"model": "bagelsmore:book/Book1"},
+                "Book5": {"model": "bagelsmore:book/Book5"},
+                "Book6": {"model": "bagelsmore:book/Book6"},
+                "Book7": {"model": "bagelsmore:book/Book7"}
+            }    
+		
+		}],
 		"facing": {
 			"north": {
 				
@@ -22,6 +33,34 @@
 			"east": {
 				"y": 90
 			}
-		}
+		},
+		"book1":{
+		      "true":{"submodel": {"Book1": {"model": "bagelsmore:book/Book2"}}},
+		      "false":{}
+		},
+        "book2":{
+              "true":{"submodel": {"Book2": {"model": "bagelsmore:book/Book3"}}},
+              "false":{}
+        },
+        "book3":{
+              "true":{"submodel": {"Book3": {"model": "bagelsmore:book/Book4"}}},
+              "false":{}
+        },
+        "book4":{
+              "true":{"submodel": {"Book4": {"model": "bagelsmore:book/Book1"}}},
+              "false":{}
+        },
+        "book5":{
+              "true":{"submodel": {"Book5": {"model": "bagelsmore:book/Book6"}}},
+              "false":{}
+        },
+        "book6":{
+              "true":{"submodel": {"Book6": {"model": "bagelsmore:book/Book5"}}},
+              "false":{}
+        },
+        "book7":{
+              "true":{"submodel": {"Book7": {"model": "bagelsmore:book/Book7"}}},
+              "false":{}
+        }
 	}
 }

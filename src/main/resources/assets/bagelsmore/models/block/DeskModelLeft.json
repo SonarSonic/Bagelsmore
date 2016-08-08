@@ -5,9 +5,7 @@
         "0": "bagelsmore:model/spruce/table_dark",
         "1": "bagelsmore:model/spruce/table_top",
         "2": "bagelsmore:model/spruce/table_side",
-        "3": "bagelsmore:model/spruce/table_side",
-        "4": "bagelsmore:model/spruce/drawer",
-        "5": "bagelsmore:model/spruce/gold_handle"
+        "3": "bagelsmore:model/spruce/table_side"
     },
     "elements": [
         {

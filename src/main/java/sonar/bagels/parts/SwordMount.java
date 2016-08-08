@@ -50,6 +50,16 @@ public class SwordMount extends InventoryMultipart {
 	}
 
 	@Override
+	public void harvest(EntityPlayer player, PartMOP hit) {
+		DeskMultipart part = DeskMultipart.getDeskPart(getContainer());
+		if (part != null) {
+			part.breakDesk(player, hit);
+		} else {
+			super.harvest(player, hit);
+		}
+	}
+
+	@Override
 	public boolean onActivated(EntityPlayer player, EnumHand hand, ItemStack heldItem, PartMOP hit) {
 		if (!player.isSneaking()) {
 			if (inv.getStackInSlot(0) == null && heldItem != null && heldItem.getItem() instanceof ItemSword && heldItem.stackSize == 1) {
@@ -77,8 +87,16 @@ public class SwordMount extends InventoryMultipart {
 		return 1;
 	}
 
+	public boolean shouldDropItem() {
+		return false;
+	}
+
 	@Override
 	public ItemStack createItemStack() {
-		return null;
+		DeskMultipart part = DeskMultipart.getDeskPart(getContainer());
+		if (part != null) {
+			return part.createItemStack();
+		}
+		return null;// type.getDesk();
 	}
 }

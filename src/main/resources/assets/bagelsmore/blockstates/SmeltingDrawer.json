@@ -14,6 +14,18 @@
 			"south": {"y": 180},
 			"west": {"y": 270},
 			"east": {"y": 90}
-		}
+		},
+        "on": {
+            "true": {
+                "textures": {
+                    "4": "bagelsmore:model/smelting_drawer_front_on"
+                }
+            },
+            "false": {
+                "textures": {
+                    "4": "bagelsmore:model/smelting_drawer_front"
+                }
+            }
+        }
 	}
 }

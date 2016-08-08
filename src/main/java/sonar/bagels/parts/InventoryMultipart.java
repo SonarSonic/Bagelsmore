@@ -9,7 +9,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 
-public abstract class InventoryMultipart extends SidedMultipart{
+public abstract class InventoryMultipart extends BagelsMultipart {
 
 	public BasicInventory inv = new BasicInventory(this, getInvSize());
 
@@ -23,43 +23,59 @@ public abstract class InventoryMultipart extends SidedMultipart{
 		super(face);
 	}
 
+	public ItemStack[] getStacks() {
+		return inv.getStacks();
+	}
+
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setTag("inventory", inv.serializeNBT());
+		if (!disableInv())
+			tag.setTag("inventory", inv.serializeNBT());
 		return tag;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		inv.deserializeNBT(tag.getCompoundTag("inventory"));
+		if (!disableInv())
+			inv.deserializeNBT(tag.getCompoundTag("inventory"));
 	}
 
 	@Override
 	public void writeUpdatePacket(PacketBuffer buf) {
 		super.writeUpdatePacket(buf);
-		ByteBufUtils.writeTag(buf, inv.serializeNBT());
+		if (!disableInv())
+			ByteBufUtils.writeTag(buf, inv.serializeNBT());
 	}
 
 	@Override
 	public void readUpdatePacket(PacketBuffer buf) {
 		super.readUpdatePacket(buf);
-		inv.deserializeNBT(ByteBufUtils.readTag(buf));
+		if (!disableInv())
+			inv.deserializeNBT(ByteBufUtils.readTag(buf));
 	}
 
 	@Override
 	public List<ItemStack> getDrops() {
 		List<ItemStack> list = super.getDrops();
-		for (int i = 0; i < getInvSize(); i++) {
-			if (inv.getStackInSlot(i) != null) {
-				list.add(inv.getStackInSlot(i));
+		if (!disableInv())
+			for (int i = 0; i < getInvSize(); i++) {
+				if (inv.getStackInSlot(i) != null) {
+					list.add(inv.getStackInSlot(i));
+				}
 			}
-		}
 		return list;
 	}
-	
-	public void markPartDirty(){
+
+	public void markPartDirty() {
 		this.markDirty();
+		if (this instanceof StorageDrawer || this instanceof DeskCraftingPart || this instanceof Bookshelf) {
+			this.sendUpdatePacket();
+		}
+	}
+
+	public boolean disableInv() {
+		return false;
 	}
 }

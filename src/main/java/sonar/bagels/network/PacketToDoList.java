@@ -46,7 +46,7 @@ public class PacketToDoList implements IMessage {
 		buf.writeInt(paper.getPos().getX());
 		buf.writeInt(paper.getPos().getY());
 		buf.writeInt(paper.getPos().getZ());
-		paper.writeUpdatePacket(buf, true);
+		paper.list.writeUpdatePacket(buf, true);
 	}
 
 	public static class Handler implements IMessageHandler<PacketToDoList, IMessage> {
@@ -57,7 +57,7 @@ public class PacketToDoList implements IMessage {
 			if (container != null) {
 				IMultipart part = container.getPartFromID(message.recievedUUID);
 				if (part != null && part instanceof Paper) {
-					((Paper) part).readUpdatePacket(message.recievedBuf, false);
+					((Paper) part).list.readUpdatePacket(message.recievedBuf, false);
 				}
 			}
 			return null;
