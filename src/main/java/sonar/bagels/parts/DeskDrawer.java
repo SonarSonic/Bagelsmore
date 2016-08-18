@@ -74,7 +74,6 @@ public abstract class DeskDrawer extends InventoryMultipart implements IDeskDraw
 				shouldRenderSpecials = true;
 			}
 		}
-		//System.out.println(shouldRenderSpecials);
 		if (oldValue != this.shouldRenderSpecials) {
 			this.sendUpdatePacket();
 		}

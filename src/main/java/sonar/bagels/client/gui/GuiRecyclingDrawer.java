@@ -7,9 +7,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import sonar.bagels.Bagels;
-import sonar.bagels.common.containers.ContainerCraftingPart;
 import sonar.bagels.common.containers.ContainerRecyclingDrawer;
-import sonar.bagels.parts.DeskCraftingPart;
 import sonar.bagels.parts.RecyclingDrawer;
 
 @SideOnly(Side.CLIENT)

@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import sonar.bagels.parts.DeskDrawer;
 import sonar.bagels.parts.DrawerLarge;
 import sonar.bagels.parts.DrawerSmall;
+import sonar.bagels.parts.EnderDrawer;
 import sonar.bagels.parts.FluidDrawer;
 import sonar.bagels.parts.RecyclingDrawer;
 import sonar.bagels.parts.SmeltingDrawer;
@@ -86,6 +87,15 @@ public abstract class DeskDrawerItem extends ItemMultiPart {
 		@Override
 		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
 			return new FluidDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
+		}
+
+	}
+
+	public static class EnderDrawerItem extends DeskDrawerItem {
+
+		@Override
+		public IMultipart createPart(World world, BlockPos pos, EnumFacing side, Vec3d hit, ItemStack stack, EntityPlayer player) {
+			return new EnderDrawer(DrawerPosition.NONE, player.getHorizontalFacing().getOpposite());
 		}
 
 	}

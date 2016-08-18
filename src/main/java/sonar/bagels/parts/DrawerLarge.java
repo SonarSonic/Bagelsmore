@@ -1,12 +1,8 @@
 package sonar.bagels.parts;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import sonar.bagels.Bagels;
-import sonar.bagels.client.gui.GuiStorageDrawer;
-import sonar.bagels.common.containers.ContainerStorageDrawer;
 import sonar.bagels.utils.DrawerPosition;
 import sonar.bagels.utils.DrawerType;
 import sonar.bagels.utils.IGuiPart;

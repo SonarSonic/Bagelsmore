@@ -20,7 +20,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,7 +27,6 @@ import sonar.bagels.Bagels;
 import sonar.bagels.utils.DeskType;
 import sonar.bagels.utils.DrawerPosition;
 import sonar.bagels.utils.IDeskDrawer;
-import sonar.bagels.utils.IDeskPart;
 import sonar.bagels.utils.TodoList;
 
 public abstract class DeskMultipart extends BagelsMultipart implements INormallyOccludingPart {

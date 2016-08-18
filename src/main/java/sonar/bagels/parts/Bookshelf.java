@@ -16,7 +16,6 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import sonar.bagels.Bagels;
 import sonar.bagels.client.gui.GuiBookshelf;
 import sonar.bagels.common.containers.ContainerBookshelf;

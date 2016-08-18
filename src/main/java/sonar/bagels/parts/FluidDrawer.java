@@ -1,26 +1,21 @@
 package sonar.bagels.parts;
 
-import mcmultipart.multipart.IMultipart;
 import mcmultipart.raytrace.PartMOP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import sonar.bagels.Bagels;
-import sonar.bagels.client.gui.GuiStorageDrawer;
-import sonar.bagels.common.containers.ContainerStorageDrawer;
 import sonar.bagels.utils.DrawerPosition;
 import sonar.bagels.utils.DrawerType;
-import sonar.bagels.utils.IGuiPart;
 
 public class FluidDrawer extends DeskDrawer {
 

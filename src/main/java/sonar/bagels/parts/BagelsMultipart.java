@@ -3,8 +3,6 @@ package sonar.bagels.parts;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import mcmultipart.MCMultiPartMod;
 import mcmultipart.multipart.INormallyOccludingPart;
 import mcmultipart.multipart.Multipart;
@@ -24,7 +22,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
-import scala.actors.threadpool.Arrays;
 import sonar.bagels.utils.IDeskPart;
 
 public abstract class BagelsMultipart extends Multipart implements INormallyOccludingPart, IDeskPart, IWorldNameable {

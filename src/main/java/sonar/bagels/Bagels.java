@@ -35,6 +35,7 @@ import sonar.bagels.parts.DeskCraftingPart;
 import sonar.bagels.parts.DeskMultipart;
 import sonar.bagels.parts.DrawerLarge;
 import sonar.bagels.parts.DrawerSmall;
+import sonar.bagels.parts.EnderDrawer;
 import sonar.bagels.parts.FluidDrawer;
 import sonar.bagels.parts.Paper;
 import sonar.bagels.parts.RecyclingDrawer;
@@ -47,7 +48,7 @@ import sonar.bagels.utils.TodoListRecipe;
 public class Bagels {
 	// HORRORS LIE IN THIS SOURCE CODE, STAY BACK
 	public static final String modid = "bagelsmore";
-	public static final String version = "1.0.0";
+	public static final String version = "1.0.2";
 
 	@Instance(modid)
 	public static Bagels instance;
@@ -56,17 +57,17 @@ public class Bagels {
 	public static BagelCommon proxy;
 
 	public static SimpleNetworkWrapper network;
-	
-	public CreativeTabs tab = new CreativeTabs(modid){
+
+	public CreativeTabs tab = new CreativeTabs(modid) {
 
 		@Override
 		public Item getTabIconItem() {
 			return deskFancy;
 		}
-		
+
 	};
 
-	public static Item deskFancy, deskStone, deskTreated, smallDrawer, largeDrawer, smeltingDrawer, recyclingDrawer, bookshelf, clipboard, clipboardEmpty, fluidDrawer;
+	public static Item deskFancy, deskStone, deskTreated, smallDrawer, largeDrawer, smeltingDrawer, recyclingDrawer, enderDrawer, bookshelf, clipboard, clipboardEmpty, fluidDrawer;
 	public static Block fancyPlanks, fancyStone, treatedPlanks;
 
 	@EventHandler
@@ -89,6 +90,8 @@ public class Bagels {
 		GameRegistry.register(smeltingDrawer);
 		recyclingDrawer = new DeskDrawerItem.RecyclingDrawerItem().setUnlocalizedName("RecyclingDrawer").setRegistryName("RecyclingDrawer").setCreativeTab(tab);
 		GameRegistry.register(recyclingDrawer);
+		enderDrawer = new DeskDrawerItem.EnderDrawerItem().setUnlocalizedName("EnderDrawer").setRegistryName("EnderDrawer").setCreativeTab(tab);
+		GameRegistry.register(enderDrawer);
 		largeDrawer = new DeskDrawerItem.DrawerLargeItem().setUnlocalizedName("DrawerLarge").setRegistryName("DrawerLarge").setCreativeTab(tab);
 		GameRegistry.register(largeDrawer);
 		fluidDrawer = new DeskDrawerItem.FluidDrawerItem().setUnlocalizedName("FluidDrawer").setRegistryName("FluidDrawer").setCreativeTab(tab);
@@ -109,6 +112,7 @@ public class Bagels {
 		MultipartRegistry.registerPart(FluidDrawer.class, "bagelsmore:FluidDrawer");
 		MultipartRegistry.registerPart(SmeltingDrawer.class, "bagelsmore:SmeltingDrawer");
 		MultipartRegistry.registerPart(RecyclingDrawer.class, "bagelsmore:RecyclingDrawer");
+		MultipartRegistry.registerPart(EnderDrawer.class, "bagelsmore:EnderDrawer");
 		MultipartRegistry.registerPart(SwordMount.class, "bagelsmore:SwordMount");
 		MultipartRegistry.registerPart(Bookshelf.class, "bagelsmore:Bookshelf");
 		MultipartRegistry.registerPart(DeskCraftingPart.class, "bagelsmore:CraftingPart");
@@ -132,10 +136,12 @@ public class Bagels {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(smallDrawer, 2), new Object[] { largeDrawer }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(smeltingDrawer, 1), new Object[] { smallDrawer, Blocks.FURNACE }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(recyclingDrawer, 1), new Object[] { smallDrawer, Blocks.OBSIDIAN }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(enderDrawer, 1), new Object[] { recyclingDrawer, Blocks.ENDER_CHEST }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fluidDrawer, 1), new Object[] { largeDrawer, Items.BUCKET }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(clipboardEmpty, 1), new Object[] { fancyPlanks, Items.STICK }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fancyStone, 2), new Object[] { fancyPlanks, Blocks.STONE }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(treatedPlanks, 2), new Object[] { fancyPlanks, "plankWood" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(bookshelf, 1), new Object[] { "PPP", "   ", "   ", 'P', fancyPlanks }));
 
 	}
 

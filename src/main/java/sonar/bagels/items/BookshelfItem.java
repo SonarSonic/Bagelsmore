@@ -2,25 +2,14 @@ package sonar.bagels.items;
 
 import mcmultipart.item.ItemMultiPart;
 import mcmultipart.multipart.IMultipart;
-import mcmultipart.multipart.MultipartHelper;
-import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import sonar.bagels.parts.Bookshelf;
-import sonar.bagels.parts.DeskDrawer;
 import sonar.bagels.parts.DeskMultipart;
-import sonar.bagels.parts.DrawerLarge;
-import sonar.bagels.parts.DrawerSmall;
-import sonar.bagels.parts.FluidDrawer;
-import sonar.bagels.parts.RecyclingDrawer;
-import sonar.bagels.parts.SmeltingDrawer;
-import sonar.bagels.utils.DrawerPosition;
-import sonar.bagels.utils.IDeskDrawer;
 
 public class BookshelfItem extends ItemMultiPart {
 

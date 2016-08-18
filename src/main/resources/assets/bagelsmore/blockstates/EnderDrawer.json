@@ -1,10 +1,10 @@
 {
 	"forge_marker": 1,
 	"defaults": {
-		"model": "bagelsmore:RecyclingDrawer",
+		"model": "bagelsmore:EnderDrawer",
 		"transform": "forge:default-block",
 		"textures":{		
-            "particle": "bagelsmore:model/recycling_drawer_top"
+            "particle": "bagelsmore:model/ender_drawer_top"
         }
 	},
 	"variants": {

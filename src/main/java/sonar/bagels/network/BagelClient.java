@@ -15,6 +15,7 @@ import sonar.bagels.client.SwordRenderer;
 import sonar.bagels.parts.DeskCraftingPart;
 import sonar.bagels.parts.DrawerLarge;
 import sonar.bagels.parts.DrawerSmall;
+import sonar.bagels.parts.EnderDrawer;
 import sonar.bagels.parts.FluidDrawer;
 import sonar.bagels.parts.RecyclingDrawer;
 import sonar.bagels.parts.SmeltingDrawer;
@@ -37,6 +38,7 @@ public class BagelClient extends BagelCommon {
 		registerItem(Bagels.clipboard);
 		registerItem(Bagels.clipboardEmpty);
 		registerItem(Bagels.fluidDrawer);
+		registerItem(Bagels.enderDrawer);
 		// ModelBakery.registerItemVariants(Bagels.smallDrawer, names);
 		// ModelLoader.setCustomMeshDefinition(Bagels.smallDrawer,
 		// ItemMeshDefinition);
@@ -48,6 +50,7 @@ public class BagelClient extends BagelCommon {
 		MultipartRegistryClient.bindMultipartSpecialRenderer(SmeltingDrawer.class, new DrawerRenderer());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(RecyclingDrawer.class, new DrawerRenderer());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(FluidDrawer.class, new DrawerRenderer());
+		MultipartRegistryClient.bindMultipartSpecialRenderer(EnderDrawer.class, new DrawerRenderer());
 
 		MultipartRegistryClient.bindMultipartSpecialRenderer(SwordMount.class, new SwordRenderer());
 		MultipartRegistryClient.bindMultipartSpecialRenderer(DeskCraftingPart.class, new DeskCraftingRenderer());

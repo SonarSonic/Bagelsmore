@@ -2,25 +2,16 @@ package sonar.bagels.parts;
 
 import java.util.List;
 
-import io.netty.buffer.ByteBuf;
 import mcmultipart.raytrace.PartMOP;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
 import sonar.bagels.Bagels;
 import sonar.bagels.client.gui.GuiTodoList;
 import sonar.bagels.common.containers.ContainerTodoList;
@@ -45,16 +36,16 @@ public class Paper extends BagelsMultipart implements IGuiPart {
 
 		switch (face) {
 		case EAST:
-			boxes.add(new AxisAlignedBB(0.3, 1 - (0.0625 / 2), 0.2, 1 - 0.2, 1, 1 - 0.3));
+			boxes.add(new AxisAlignedBB(0.0625*5, 1 - (0.0625 / 2), 0.2, 1 - 0.2, 1, 1 - 0.0625*5));
 			break;
 		case NORTH:
-			boxes.add(new AxisAlignedBB(0.2, 1 - (0.0625 / 2), 0.2, 1 - 0.3, 1, 1 - 0.3));
+			boxes.add(new AxisAlignedBB(0.2, 1 - (0.0625 / 2), 0.2, 1 - 0.0625*5, 1, 1 - 0.0625*5));
 			break;
 		case SOUTH:
-			boxes.add(new AxisAlignedBB(0.3, 1 - (0.0625 / 2), 0.3, 1 - 0.2, 1, 1 - 0.2));
+			boxes.add(new AxisAlignedBB(0.0625*5, 1 - (0.0625 / 2), 0.0625*5, 1 - 0.2, 1, 1 - 0.2));
 			break;
 		case WEST:
-			boxes.add(new AxisAlignedBB(1 - 0.3, 1 - (0.0625 / 2), 1 - 0.2, 0.2, 1, 0.3));
+			boxes.add(new AxisAlignedBB(1 - 0.0625*5, 1 - (0.0625 / 2), 1 - 0.2, 0.2, 1, 0.0625*5));
 			break;
 		default:
 			break;

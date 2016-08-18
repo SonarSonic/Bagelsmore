@@ -6,7 +6,6 @@ import mcmultipart.client.multipart.MultipartSpecialRenderer;
 import mcmultipart.client.multipart.MultipartStateMapper;
 import mcmultipart.multipart.PartState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -21,16 +20,14 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing.AxisDirection;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidEvent.FluidSpilledEvent;
 import sonar.bagels.parts.DeskDrawer;
+import sonar.bagels.parts.EnderDrawer;
 import sonar.bagels.parts.FluidDrawer;
 import sonar.bagels.parts.SmeltingDrawer;
 import sonar.bagels.parts.StorageDrawer;
-import sonar.bagels.utils.DrawerPosition;
 
 //TWEAKED FAST MSR
 public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
@@ -142,7 +139,7 @@ public class DrawerRenderer extends MultipartSpecialRenderer<DeskDrawer> {
 						GL11.glDisable(GL11.GL_LIGHTING);
 						GlStateManager.rotate(90, 1, 0, 0);
 						GlStateManager.translate(0, 0, -0.0625 * 5);
-						this.drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, part instanceof SmeltingDrawer ? FluidRegistry.LAVA.getStill() : new ResourceLocation("minecraft:blocks/portal"), 1.45, 1.45);
+						this.drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, part instanceof SmeltingDrawer ? FluidRegistry.LAVA.getStill()  :  part instanceof EnderDrawer? new ResourceLocation("minecraft:blocks/obsidian") : new ResourceLocation("minecraft:blocks/portal"), 1.45, 1.45);
 
 						GlStateManager.popAttrib();
 					} else {

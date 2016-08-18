@@ -15,12 +15,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import sonar.bagels.parts.Bookshelf;
 import sonar.bagels.parts.Candle;
 import sonar.bagels.parts.DeskCraftingPart;
 import sonar.bagels.parts.DeskMultipart;
 import sonar.bagels.parts.DeskMultipart.DeskPosition;
-import sonar.bagels.parts.Paper;
 import sonar.bagels.parts.SwordMount;
 import sonar.bagels.utils.DeskType;
 

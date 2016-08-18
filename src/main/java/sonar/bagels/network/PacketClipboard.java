@@ -1,20 +1,13 @@
 package sonar.bagels.network;
 
-import java.util.UUID;
-
 import io.netty.buffer.ByteBuf;
-import mcmultipart.multipart.IMultipart;
-import mcmultipart.multipart.IMultipartContainer;
-import mcmultipart.multipart.MultipartHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import sonar.bagels.Bagels;
 import sonar.bagels.items.Clipboard;
-import sonar.bagels.parts.Paper;
 import sonar.bagels.utils.TodoList;
 
 public class PacketClipboard implements IMessage {

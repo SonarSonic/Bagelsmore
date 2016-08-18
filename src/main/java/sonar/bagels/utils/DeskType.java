@@ -2,7 +2,6 @@ package sonar.bagels.utils;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import sonar.bagels.Bagels;
 
 public enum DeskType implements IStringSerializable {

@@ -7,7 +7,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemBook;
 import net.minecraft.item.ItemStack;
 import sonar.bagels.parts.Bookshelf;
 
@@ -49,22 +48,40 @@ public class ContainerBookshelf extends Container {
 			ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
-			if (index < entity.getInvSize()) {
-				if (!this.mergeItemStack(itemstack1, entity.getInvSize(), this.inventorySlots.size(), true)) {
+			if (index < 7) {
+				if (!this.mergeItemStack(itemstack1, 7, 43, true)) {
 					return null;
 				}
+				slot.onSlotChange(itemstack1, itemstack);
 			} else if (Bookshelf.isBook(itemstack1)) {
 				if (!this.mergeItemStack(itemstack1, 0, entity.getInvSize() + 1, false)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(itemstack1, 37, this.inventorySlots.size(), true)) {
+			} else if (index >= 7 && index < 34) {				
+				if (!this.mergeItemStack(itemstack1, 34, 43, false)) {
+					return null;
+				}
+			} else if (index >= 34 && index < 43) {
+				if (!this.mergeItemStack(itemstack1, 7, 34, false)) {
+					return null;
+				}
+			} else if (!this.mergeItemStack(itemstack1, 7, 43, false)) {
 				return null;
-			}
+			}			
+			
 			if (itemstack1.stackSize == 0) {
 				slot.putStack((ItemStack) null);
 			} else {
 				slot.onSlotChanged();
 			}
+
+			if (itemstack1.stackSize == itemstack.stackSize) {
+				return null;
+			}
+
+			slot.onPickupFromSlot(playerIn, itemstack1);
+			
+			
 		}
 
 		return itemstack;

@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import sonar.bagels.parts.Paper;
 import sonar.bagels.utils.TodoList;
 
 public class ContainerTodoList extends Container {
