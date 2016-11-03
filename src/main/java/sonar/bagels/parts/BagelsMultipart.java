@@ -22,6 +22,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IWorldNameable;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import sonar.bagels.utils.IDeskPart;
 
 public abstract class BagelsMultipart extends Multipart implements INormallyOccludingPart, IDeskPart, IWorldNameable {
@@ -149,4 +150,17 @@ public abstract class BagelsMultipart extends Multipart implements INormallyOccl
 		return Material.WOOD;
 	}
 
+	public boolean isClient() {
+		if (getWorld() == null) {
+			return FMLCommonHandler.instance().getEffectiveSide().isClient();
+		}
+		return this.getWorld().isRemote;
+	}
+
+	public boolean isServer() {
+		if (getWorld() == null) {
+			return FMLCommonHandler.instance().getEffectiveSide().isServer();
+		}
+		return !this.getWorld().isRemote;
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mcmultipart.MCMultiPartMod;
+import mcmultipart.block.TileMultipartContainer;
 import mcmultipart.multipart.IMultipart;
 import mcmultipart.multipart.IMultipartContainer;
 import mcmultipart.multipart.INormallyOccludingPart;
@@ -13,6 +14,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -124,6 +126,7 @@ public abstract class DeskMultipart extends BagelsMultipart implements INormally
 	public void removeSlave(IDeskDrawer drawer) {
 		drawers.remove(drawer);
 		this.onSlaveChanged();
+
 	}
 
 	public static DeskMultipart createDeskMultipart(DeskType type, DeskPosition position, EnumFacing face) {
@@ -162,7 +165,7 @@ public abstract class DeskMultipart extends BagelsMultipart implements INormally
 							player.setHeldItem(hand, new ItemStack(Bagels.clipboardEmpty, 1));
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -171,9 +174,7 @@ public abstract class DeskMultipart extends BagelsMultipart implements INormally
 
 	public void breakDesk(EntityPlayer player, PartMOP hit) {
 		DeskMultipart middlePart = null;
-		if (middle != null) {
-			middlePart = this.position == DeskPosition.MIDDLE ? this : getDeskPart(this.getWorld(), middle);
-		} else {
+		if (middle == null || (middlePart = this.position == DeskPosition.MIDDLE ? this : getDeskPart(getWorld(), middle)) == null) {
 			doHarvest = true;
 			harvest(player, hit);
 		}
@@ -202,13 +203,22 @@ public abstract class DeskMultipart extends BagelsMultipart implements INormally
 			return;
 		}
 		ArrayList<BagelsMultipart> toDelete = new ArrayList();
-		for (IMultipart part : this.getContainer().getParts()) {
+		IMultipartContainer container = this.getContainer();
+		for (IMultipart part : container.getParts()) {
 			if (part != this && part instanceof BagelsMultipart) {
 				toDelete.add((BagelsMultipart) part);
 			}
 		}
 		toDelete.forEach(part -> part.defaultHarvest(player, hit));
+		World world = getWorld();
+		BlockPos pos = getPos();
 		super.harvest(player, hit);
+		if (getContainer() == null && !world.isAirBlock(pos)) {
+			//IBlockState state = world.getBlockState(pos);
+			//world.setBlockState(pos, Blocks.AIR.getDefaultState());
+			//state.getBlock().removedByPlayer(state, world, pos, player, true);
+		}
+
 	}
 
 	public static IDeskDrawer getDrawerInPosition(DeskMultipart desk, DrawerPosition position) {
@@ -274,12 +284,14 @@ public abstract class DeskMultipart extends BagelsMultipart implements INormally
 		position = DeskPosition.values()[tag.getInteger("position")];
 		if (tag.hasKey("middleX"))
 			middle = new BlockPos(tag.getInteger("middleX"), tag.getInteger("middleY"), tag.getInteger("middleZ"));
+
 	}
 
 	@Override
 	public void writeUpdatePacket(PacketBuffer buf) {
 		super.writeUpdatePacket(buf);
 		buf.writeInt(position.ordinal());
+
 	}
 
 	@Override

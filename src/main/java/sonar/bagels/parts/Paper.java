@@ -109,13 +109,13 @@ public class Paper extends BagelsMultipart implements IGuiPart {
 	@Override
 	public void writeUpdatePacket(PacketBuffer buf) {
 		super.writeUpdatePacket(buf);
-		list.writeUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient());
+		list.writeUpdatePacket(buf, isClient());
 	}
 
 	@Override
 	public void readUpdatePacket(PacketBuffer buf) {
 		super.readUpdatePacket(buf);
-		if (list.readUpdatePacket(buf, FMLCommonHandler.instance().getEffectiveSide().isClient())) {
+		if (list.readUpdatePacket(buf, isClient())) {
 			sendUpdatePacket();
 		}
 	}
