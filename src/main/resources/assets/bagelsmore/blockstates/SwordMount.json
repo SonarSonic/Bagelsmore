@@ -2,7 +2,6 @@
 	"forge_marker": 1,
 	"defaults": {
 		"model": "bagelsmore:SwordMount",
-		"transform": "forge:default-block",
 		"textures":{		
             "particle": "bagelsmore:model/sword_mount"
         }

@@ -3,10 +3,10 @@
 	"defaults": {
 		"model": "bagelsmore:TableTop",
 		"textures":{		
-            "particle": "bagelsmore:model/table_top",            
+            "particle": "bagelsmore:model/stone/table_top",            
             "table": "bagelsmore:model/stone/table_middle",
-            "tableRight": "bagelsmore:model/stone/table_left",
-            "tableLeft": "bagelsmore:model/stone/table_right",
+            "tableRight": "bagelsmore:model/stone/table_right",
+            "tableLeft": "bagelsmore:model/stone/table_left",
             "0": "bagelsmore:model/stone/table_dark",
             "1": "bagelsmore:model/stone/table_top",
             "2": "bagelsmore:model/stone/table_side",
@@ -26,18 +26,20 @@
 			"north": {},
 			"south": {"y": 180},
 			"west": {"y": 270},
-			"east": {"y": 90}
+			"east": {"y": 90},
+            "down": {},
+            "up": {}
 		},
         "table": {
             "left": {
-                "textures":{"table": "bagelsmore:model/stone/table_left"},
+                "textures":{"table": "bagelsmore:model/stone/table_right"},
                 "submodel": {"table": {"model": "bagelsmore:DeskModel"}}
             },
             "middle": {
                 "textures":{"table": "bagelsmore:model/stone/table_middle"}
             },
             "right": {
-                "textures":{"table": "bagelsmore:model/stone/table_right"},
+                "textures":{"table": "bagelsmore:model/stone/table_left"},
                 "submodel": {"table": {"model": "bagelsmore:DeskModel"}}
             }
         }

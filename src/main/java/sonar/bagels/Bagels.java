@@ -1,6 +1,6 @@
 package sonar.bagels;
 
-import mcmultipart.multipart.MultipartRegistry;
+import mcmultipart.api.slot.IPartSlot;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,6 +8,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -16,41 +17,54 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.RecipeSorter;
-import net.minecraftforge.oredict.RecipeSorter.Category;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import sonar.bagels.items.BookshelfItem;
+import net.minecraftforge.oredict.OreDictionary;
+import sonar.bagels.api.DeskType;
+import sonar.bagels.api.DrawerPosition;
+import sonar.bagels.api.EnumCandleSlot;
+import sonar.bagels.common.blocks.BlockBookshelf;
+import sonar.bagels.common.blocks.BlockCabinet;
+import sonar.bagels.common.blocks.BlockCandle;
+import sonar.bagels.common.blocks.BlockDesk;
+import sonar.bagels.common.blocks.BlockEnderDrawer;
+import sonar.bagels.common.blocks.BlockFluidDrawer;
+import sonar.bagels.common.blocks.BlockLargeStorageDrawer;
+import sonar.bagels.common.blocks.BlockPaper;
+import sonar.bagels.common.blocks.BlockRecyclingDrawer;
+import sonar.bagels.common.blocks.BlockSmallStorageDrawer;
+import sonar.bagels.common.blocks.BlockSmeltingDrawer;
+import sonar.bagels.common.blocks.BlockSwordMount;
+import sonar.bagels.common.tileentity.TileBookshelf;
+import sonar.bagels.common.tileentity.TileCabinet;
+import sonar.bagels.common.tileentity.TileCandle;
+import sonar.bagels.common.tileentity.TileDesk;
+import sonar.bagels.common.tileentity.TileEnderDrawer;
+import sonar.bagels.common.tileentity.TileFluidDrawer;
+import sonar.bagels.common.tileentity.TilePaper;
+import sonar.bagels.common.tileentity.TileRecyclingDrawer;
+import sonar.bagels.common.tileentity.TileSmeltingDrawer;
+import sonar.bagels.common.tileentity.TileStorageDrawer;
+import sonar.bagels.common.tileentity.TileSwordMount;
 import sonar.bagels.items.Clipboard;
 import sonar.bagels.items.DeskDrawerItem;
-import sonar.bagels.items.DeskDrawerItem.SmeltingDrawerItem;
 import sonar.bagels.items.DeskItem;
 import sonar.bagels.network.BagelCommon;
-import sonar.bagels.parts.Bookshelf;
-import sonar.bagels.parts.Candle;
-import sonar.bagels.parts.DeskCraftingPart;
-import sonar.bagels.parts.DeskMultipart;
-import sonar.bagels.parts.DrawerLarge;
-import sonar.bagels.parts.DrawerSmall;
-import sonar.bagels.parts.EnderDrawer;
-import sonar.bagels.parts.FluidDrawer;
-import sonar.bagels.parts.Paper;
-import sonar.bagels.parts.RecyclingDrawer;
-import sonar.bagels.parts.SmeltingDrawer;
-import sonar.bagels.parts.SwordMount;
-import sonar.bagels.utils.DeskType;
 import sonar.bagels.utils.TodoListRecipe;
+import sonar.core.SonarCrafting;
+import sonar.core.SonarRegister;
+import sonar.core.registries.SonarRegistryMultipart;
 
-@Mod(modid = Bagels.modid, name = "bagelsmore", version = Bagels.version, dependencies = "required-after:mcmultipart")
+@Mod(modid = Bagels.MODID, name = "bagelsmore", version = Bagels.VERSION, acceptedMinecraftVersions = Bagels.MC_VERSIONS, dependencies = "required-after:sonarcore@[" + Bagels.SONAR_CORE + ",);" + "required-after:mcmultipart@[" + Bagels.MCMULTIPART + ",);")
 public class Bagels {
-	// HORRORS LIE IN THIS SOURCE CODE, STAY BACK
-	public static final String modid = "bagelsmore";
-	public static final String version = "1.0.2";
 
-	@Instance(modid)
+	public static final String MODID = "bagelsmore";
+	public static final String VERSION = "2.0.0";
+	public static final String SONAR_CORE = "5.0.5";
+	public static final String MCMULTIPART = "2.4.1";
+	public static final String MC_VERSIONS = "[1.12,1.12.2]";
+
+	@Instance(MODID)
 	public static Bagels instance;
 
 	@SidedProxy(clientSide = "sonar.bagels.network.BagelClient", serverSide = "sonar.bagels.network.BagelCommon")
@@ -58,65 +72,68 @@ public class Bagels {
 
 	public static SimpleNetworkWrapper network;
 
-	public CreativeTabs tab = new CreativeTabs(modid) {
-
+	public static CreativeTabs tab = new CreativeTabs(MODID) {
 		@Override
-		public Item getTabIconItem() {
-			return deskFancy;
+		public ItemStack getTabIconItem() {
+			return new ItemStack(deskFancy);
 		}
-
 	};
 
-	public static Item deskFancy, deskStone, deskTreated, smallDrawer, largeDrawer, smeltingDrawer, recyclingDrawer, enderDrawer, bookshelf, clipboard, clipboardEmpty, fluidDrawer;
+	// decoration blocks
 	public static Block fancyPlanks, fancyStone, treatedPlanks;
+	// cabinets
+	public static Block cabinetFancy, cabinetStone, cabinetTreated;
+	// desks
+	public static Block deskFancy, deskStone, deskTreated;
+	// drawers
+	public static Block smallDrawer, largeDrawer, smeltingDrawer, recyclingDrawer, enderDrawer, fluidDrawer;
+	// desk decoration
+	public static Block bookshelf, blockPaper, swordMount, candle;
+	// items
+	public static Item clipboard, clipboardEmpty;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		fancyPlanks = new Block(Material.WOOD).setUnlocalizedName("FancyPlanks").setRegistryName("FancyPlanks").setCreativeTab(tab);
-		GameRegistry.registerBlock(fancyPlanks);
-		treatedPlanks = new Block(Material.WOOD).setUnlocalizedName("TreatedPlanks").setRegistryName("TreatedPlanks").setCreativeTab(tab);
-		GameRegistry.registerBlock(treatedPlanks);
-		fancyStone = new Block(Material.WOOD).setUnlocalizedName("FancyStone").setRegistryName("FancyStone").setCreativeTab(tab);
-		GameRegistry.registerBlock(fancyStone);
-		deskFancy = new DeskItem(DeskType.FANCY).setUnlocalizedName("DeskFancy").setRegistryName("DeskFancy").setCreativeTab(tab);
-		GameRegistry.register(deskFancy);
-		deskStone = new DeskItem(DeskType.STONE).setUnlocalizedName("DeskStone").setRegistryName("DeskStone").setCreativeTab(tab);
-		GameRegistry.register(deskStone);
-		deskTreated = new DeskItem(DeskType.TREATED).setUnlocalizedName("DeskTreated").setRegistryName("DeskTreated").setCreativeTab(tab);
-		GameRegistry.register(deskTreated);
-		smallDrawer = new DeskDrawerItem.DrawerSmallItem().setUnlocalizedName("DrawerSmall").setRegistryName("DrawerSmall").setCreativeTab(tab);
-		GameRegistry.register(smallDrawer);
-		smeltingDrawer = new SmeltingDrawerItem().setUnlocalizedName("SmeltingDrawer").setRegistryName("SmeltingDrawer").setCreativeTab(tab);
-		GameRegistry.register(smeltingDrawer);
-		recyclingDrawer = new DeskDrawerItem.RecyclingDrawerItem().setUnlocalizedName("RecyclingDrawer").setRegistryName("RecyclingDrawer").setCreativeTab(tab);
-		GameRegistry.register(recyclingDrawer);
-		enderDrawer = new DeskDrawerItem.EnderDrawerItem().setUnlocalizedName("EnderDrawer").setRegistryName("EnderDrawer").setCreativeTab(tab);
-		GameRegistry.register(enderDrawer);
-		largeDrawer = new DeskDrawerItem.DrawerLargeItem().setUnlocalizedName("DrawerLarge").setRegistryName("DrawerLarge").setCreativeTab(tab);
-		GameRegistry.register(largeDrawer);
-		fluidDrawer = new DeskDrawerItem.FluidDrawerItem().setUnlocalizedName("FluidDrawer").setRegistryName("FluidDrawer").setCreativeTab(tab);
-		GameRegistry.register(fluidDrawer);
-		bookshelf = new BookshelfItem().setUnlocalizedName("Bookshelf").setRegistryName("Bookshelf").setCreativeTab(tab);
-		GameRegistry.register(bookshelf);
-		clipboard = new Clipboard().setMaxStackSize(1).setUnlocalizedName("Clipboard").setRegistryName("Clipboard").setCreativeTab(tab);
-		GameRegistry.register(clipboard);
-		clipboardEmpty = new Item().setMaxStackSize(1).setUnlocalizedName("ClipboardEmpty").setRegistryName("ClipboardEmpty").setCreativeTab(tab);
-		GameRegistry.register(clipboardEmpty);
+		// decoration blocks
+		fancyPlanks = SonarRegister.addBlock(MODID, tab, "FancyPlanks", new Block(Material.WOOD).setHardness(0.4f));
+		treatedPlanks = SonarRegister.addBlock(MODID, tab, "TreatedPlanks", new Block(Material.WOOD).setHardness(0.4f));
+		fancyStone = SonarRegister.addBlock(MODID, tab, "FancyStone", new Block(Material.WOOD).setHardness(0.4f));
 
-		MultipartRegistry.registerPart(DeskMultipart.Fancy.class, "bagelsmore:DeskFancy");
-		MultipartRegistry.registerPart(DeskMultipart.Stone.class, "bagelsmore:DeskStone");
-		MultipartRegistry.registerPart(DeskMultipart.Treated.class, "bagelsmore:DeskTreated");
-		MultipartRegistry.registerPart(Paper.class, "bagelsmore:Paper");
-		MultipartRegistry.registerPart(DrawerSmall.class, "bagelsmore:DrawerSmall");
-		MultipartRegistry.registerPart(DrawerLarge.class, "bagelsmore:DrawerLarge");
-		MultipartRegistry.registerPart(FluidDrawer.class, "bagelsmore:FluidDrawer");
-		MultipartRegistry.registerPart(SmeltingDrawer.class, "bagelsmore:SmeltingDrawer");
-		MultipartRegistry.registerPart(RecyclingDrawer.class, "bagelsmore:RecyclingDrawer");
-		MultipartRegistry.registerPart(EnderDrawer.class, "bagelsmore:EnderDrawer");
-		MultipartRegistry.registerPart(SwordMount.class, "bagelsmore:SwordMount");
-		MultipartRegistry.registerPart(Bookshelf.class, "bagelsmore:Bookshelf");
-		MultipartRegistry.registerPart(DeskCraftingPart.class, "bagelsmore:CraftingPart");
-		MultipartRegistry.registerPart(Candle.class, "bagelsmore:Candle");
+		// cabinets
+		cabinetFancy = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.FANCY), "CabinetFancy").setProperties(0.4F, 20.0F));
+		cabinetStone = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.STONE), "CabinetStone").setProperties(0.4F, 20.0F));
+		cabinetTreated = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.TREATED), "CabinetTreated").setProperties(0.4F, 20.0F));
+		
+		// desks
+		deskFancy = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.FANCY), "DeskFancy").setProperties(0.4F, 20.0F));
+		deskStone = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.STONE), "DeskStone").setProperties(0.4F, 20.0F));
+		deskTreated = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.TREATED), "DeskTreated").setProperties(0.4F, 20.0F));
+
+		// drawers
+		smallDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmallStorageDrawer(), "DrawerSmall", TileStorageDrawer.Small.class).setProperties(0.4F, 20.0F));
+		largeDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockLargeStorageDrawer(), "DrawerLarge", TileStorageDrawer.Large.class).setProperties(0.4F, 20.0F));
+		smeltingDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmeltingDrawer(), "SmeltingDrawer", TileSmeltingDrawer.class).setProperties(0.4F, 20.0F));
+		recyclingDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockRecyclingDrawer(), "RecyclingDrawer", TileRecyclingDrawer.class).setProperties(0.4F, 20.0F));
+		enderDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockEnderDrawer(), "EnderDrawer", TileEnderDrawer.class).setProperties(0.4F, 20.0F));
+		fluidDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockFluidDrawer(), "FluidDrawer", TileFluidDrawer.class).setProperties(0.4F, 20.0F));
+
+		// desk decoration
+		bookshelf = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockBookshelf().setHardness(0.4f), "Bookshelf", TileBookshelf.class));
+		blockPaper = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockPaper().setHardness(0.4f), "Paper", TilePaper.class));
+		swordMount = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockSwordMount().setHardness(0.4f), "SwordMount", TileSwordMount.class));
+		candle = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCandle().setHardness(0.4f), "Candle", TileCandle.class));
+
+		// items
+		clipboard = SonarRegister.addItem(MODID, tab, "Clipboard", new Clipboard().setMaxStackSize(1));
+		clipboardEmpty = SonarRegister.addItem(MODID, tab, "ClipboardEmpty", new Item().setMaxStackSize(1));
+
+		// additional tile entities
+		GameRegistry.registerTileEntity(TileDesk.LEFT.class, "AbstractDeskLeft");
+		GameRegistry.registerTileEntity(TileDesk.MIDDLE.class, "AbstractDeskMiddle");
+		GameRegistry.registerTileEntity(TileDesk.RIGHT.class, "AbstractDeskRight");
+		GameRegistry.registerTileEntity(TileCabinet.class, "AbstractCabinet");
+
+		// proxy trigger
 		proxy.registerRenderThings();
 		proxy.registerPackets();
 	}
@@ -124,34 +141,49 @@ public class Bagels {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		proxy.registerSpecialRenderers();
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, proxy);
-		RecipeSorter.register("bagelsmore:todolist", TodoListRecipe.class, Category.SHAPELESS, "after:forge:shapedore");
-		GameRegistry.addRecipe(new TodoListRecipe(new ItemStack(clipboard), new Object[] { Items.PAPER, Bagels.clipboardEmpty }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(fancyPlanks, 16), new Object[] { "WPW", "P P", "WPW", 'P', "plankWood", 'W', "logWood" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(deskFancy, 1), new Object[] { "PPP", "P P", "   ", 'P', fancyPlanks }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(deskTreated, 1), new Object[] { "PPP", "P P", "   ", 'P', treatedPlanks }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(deskStone, 1), new Object[] { "PPP", "P P", "   ", 'P', fancyStone }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(smallDrawer, 1), new Object[] { "   ", "P N", "PPP", 'P', fancyPlanks, 'N', Items.GOLD_NUGGET }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(largeDrawer, 1), new Object[] { smallDrawer, smallDrawer }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(smallDrawer, 2), new Object[] { largeDrawer }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(smeltingDrawer, 1), new Object[] { smallDrawer, Blocks.FURNACE }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(recyclingDrawer, 1), new Object[] { smallDrawer, Blocks.OBSIDIAN }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(enderDrawer, 1), new Object[] { recyclingDrawer, Blocks.ENDER_CHEST }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fluidDrawer, 1), new Object[] { largeDrawer, Items.BUCKET }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(clipboardEmpty, 1), new Object[] { fancyPlanks, Items.STICK }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(fancyStone, 2), new Object[] { fancyPlanks, Blocks.STONE }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(treatedPlanks, 2), new Object[] { fancyPlanks, "plankWood" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(bookshelf, 1), new Object[] { "PPP", "   ", "   ", 'P', fancyPlanks }));
 
+		// IMultipart Slots
+		GameRegistry.findRegistry(IPartSlot.class).register(DrawerPosition.LARGE_BOTTOM);
+		GameRegistry.findRegistry(IPartSlot.class).register(DrawerPosition.LARGE_TOP);
+		GameRegistry.findRegistry(IPartSlot.class).register(DrawerPosition.SMALL_BOTTOM);
+		GameRegistry.findRegistry(IPartSlot.class).register(DrawerPosition.SMALL_MIDDLE);
+		GameRegistry.findRegistry(IPartSlot.class).register(DrawerPosition.SMALL_TOP);
+		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_N);
+		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_E);
+		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_S);
+		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_W);
+		// shaped recipes
+		SonarCrafting.addShapedOre(MODID, new ItemStack(fancyPlanks, 16), new Object[] { "WPW", "P P", "WPW", 'P', "plankWood", 'W', "logWood" });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(deskFancy, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyPlanks, 'C', cabinetFancy });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(deskTreated, 1), new Object[] { "CPC", "   ", "   ", 'P', treatedPlanks, 'C', cabinetTreated });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(deskStone, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyStone, 'C', cabinetStone });		
+		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetFancy, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyPlanks });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetTreated, 1), new Object[] { "PPP", "P P", "PPP", 'P', treatedPlanks });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetStone, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyStone });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(smallDrawer, 1), new Object[] { "   ", "P N", "PPP", 'P', fancyPlanks, 'N', Items.GOLD_NUGGET });
+		SonarCrafting.addShapedOre(MODID, new ItemStack(bookshelf, 1), new Object[] { "PPP", "   ", "   ", 'P', fancyPlanks });
+
+		// shapeless recipes
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(fancyStone, 2), new Object[] { fancyPlanks, Blocks.STONE });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(treatedPlanks, 2), new Object[] { fancyPlanks, "plankWood" });
+
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(largeDrawer, 1), new Object[] { smallDrawer, smallDrawer });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(smallDrawer, 2), new Object[] { largeDrawer });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(smeltingDrawer, 1), new Object[] { smallDrawer, Blocks.FURNACE });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(recyclingDrawer, 1), new Object[] { smallDrawer, Blocks.OBSIDIAN });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(enderDrawer, 1), new Object[] { recyclingDrawer, Blocks.ENDER_CHEST });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(fluidDrawer, 1), new Object[] { largeDrawer, Items.BUCKET });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(clipboardEmpty, 1), new Object[] { fancyPlanks, Items.STICK });
+		SonarCrafting.addShapelessOre(MODID, new ItemStack(candle, 1), new Object[] { new ItemStack(Items.COAL, 1, 1), "string", Items.CLAY_BALL});
+
+		// custom recipes
+		ResourceLocation clipBoardRecipe = SonarCrafting.getRecipeResourceLocation(MODID, new ItemStack(clipboard));
+		SonarCrafting.registerForgeRecipe(clipBoardRecipe, new TodoListRecipe(clipBoardRecipe, new ItemStack(clipboard), new Object[] { Items.PAPER, Bagels.clipboardEmpty }));
 	}
 
 	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
-
-	}
+	public void postInit(FMLPostInitializationEvent event) {}
 
 	@EventHandler
-	public void onServerStopping(FMLServerStoppingEvent event) {
-
-	}
+	public void onServerStopping(FMLServerStoppingEvent event) {}
 }

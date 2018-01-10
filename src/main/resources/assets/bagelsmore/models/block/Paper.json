@@ -1,5 +1,12 @@
 {
-    
+    "parent":"block/block",    
+    "display": {
+        "gui": {
+            "rotation": [90, 180, 0 ],
+            "translation": [ 0, 1, 8],
+            "scale":[ 1, 1, 1 ]
+        }
+    },
     "textures":{        
       "paper": "bagelsmore:model/paper"
     },

@@ -2,7 +2,6 @@
 	"forge_marker": 1,
 	"defaults": {
 		"model": "bagelsmore:Candle",
-		"transform": "forge:default-block",
 		"textures":{		
             "particle": "bagelsmore:model/gold_handle"
         }

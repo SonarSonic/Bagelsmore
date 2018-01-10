@@ -34,33 +34,58 @@
 				"y": 90
 			}
 		},
-		"book1":{
-		      "true":{"submodel": {"Book1": {"model": "bagelsmore:book/Book2"}}},
-		      "false":{}
-		},
-        "book2":{
-              "true":{"submodel": {"Book2": {"model": "bagelsmore:book/Book3"}}},
-              "false":{}
-        },
-        "book3":{
-              "true":{"submodel": {"Book3": {"model": "bagelsmore:book/Book4"}}},
-              "false":{}
-        },
-        "book4":{
-              "true":{"submodel": {"Book4": {"model": "bagelsmore:book/Book1"}}},
-              "false":{}
-        },
-        "book5":{
-              "true":{"submodel": {"Book5": {"model": "bagelsmore:book/Book6"}}},
-              "false":{}
-        },
-        "book6":{
-              "true":{"submodel": {"Book6": {"model": "bagelsmore:book/Book5"}}},
-              "false":{}
-        },
-        "book7":{
-              "true":{"submodel": {"Book7": {"model": "bagelsmore:book/Book7"}}},
-              "false":{}
-        }
+		"books":{
+		     "0":{},
+		     "1":{
+		     "submodel": {		     
+		          "Book1": {"model": "bagelsmore:book/Book2"}
+		     }},
+             "2":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"}
+             }},
+             "3":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"},
+                  "Book3": {"model": "bagelsmore:book/Book4"}
+             }},
+             "4":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"},
+                  "Book3": {"model": "bagelsmore:book/Book4"},
+                  "Book4": {"model": "bagelsmore:book/Book1"}
+             }},
+             "5":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"},
+                  "Book3": {"model": "bagelsmore:book/Book4"},
+                  "Book4": {"model": "bagelsmore:book/Book1"},
+                  "Book5": {"model": "bagelsmore:book/Book6"}
+             }},
+             "6":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"},
+                  "Book3": {"model": "bagelsmore:book/Book4"},
+                  "Book4": {"model": "bagelsmore:book/Book1"},
+                  "Book5": {"model": "bagelsmore:book/Book6"},
+                  "Book6": {"model": "bagelsmore:book/Book5"}
+             }},
+             "7":{
+             "submodel": {           
+                  "Book1": {"model": "bagelsmore:book/Book2"},
+                  "Book2": {"model": "bagelsmore:book/Book3"},
+                  "Book3": {"model": "bagelsmore:book/Book4"},
+                  "Book4": {"model": "bagelsmore:book/Book1"},
+                  "Book5": {"model": "bagelsmore:book/Book6"},
+                  "Book6": {"model": "bagelsmore:book/Book5"},
+                  "Book7": {"model": "bagelsmore:book/Book7"}
+             }} 
+		
+		}
 	}
 }

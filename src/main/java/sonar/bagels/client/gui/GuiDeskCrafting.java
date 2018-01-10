@@ -1,35 +1,34 @@
 package sonar.bagels.client.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import sonar.bagels.Bagels;
-import sonar.bagels.common.containers.ContainerCraftingPart;
-import sonar.bagels.parts.DeskCraftingPart;
+import sonar.bagels.common.containers.ContainerDeskCrafting;
+import sonar.core.client.gui.GuiSonar;
+import sonar.core.inventory.ISonarInventoryTile;
 
 @SideOnly(Side.CLIENT)
-public class GuiDeskCrafting extends GuiContainer {
-	private static final ResourceLocation background = new ResourceLocation(Bagels.modid + ":textures/gui/crafting_part.png");
-	private final DeskCraftingPart inv;
+public class GuiDeskCrafting extends GuiSonar {
+	private static final ResourceLocation background = new ResourceLocation(Bagels.MODID + ":textures/gui/crafting_part.png");
+	private final ISonarInventoryTile inv;
 
-	public GuiDeskCrafting(DeskCraftingPart inv) {
-		super(new ContainerCraftingPart(Minecraft.getMinecraft().thePlayer, inv));
-		this.inv = inv;
+	public GuiDeskCrafting(EntityPlayer player, ISonarInventoryTile tileDeskCraftingPart) {
+		super(new ContainerDeskCrafting(player, tileDeskCraftingPart));
+		this.inv = tileDeskCraftingPart;
 		this.xSize = 176;
 		this.ySize = 166;
 
 	}
 
-	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-		this.fontRendererObj.drawString("Desk Crafting", 8, 6, 4210752);
+	public void drawGuiContainerForegroundLayer(int x, int y) {
+		super.drawGuiContainerForegroundLayer(x, y);
+		this.fontRenderer.drawString("Desk Crafting", 8, 6, 4210752);
 	}
 
-	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.getTextureManager().bindTexture(background);
-		drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+	@Override
+	public ResourceLocation getBackground() {
+		return background;
 	}
 }

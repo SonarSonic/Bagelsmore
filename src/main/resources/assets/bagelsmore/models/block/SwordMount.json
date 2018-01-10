@@ -1,4 +1,12 @@
 {
+    "parent":"block/block",
+    "display": {
+        "gui": {
+            "rotation": [ 10, 180, 0 ],
+            "translation": [ 0, -9, 8],
+            "scale":[ 0.8, 0.8, 0.8 ]
+        }
+    },
     "textures":{        
        "sword": "bagelsmore:model/sword_mount"
     },

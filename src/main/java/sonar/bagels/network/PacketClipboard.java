@@ -24,7 +24,9 @@ public class PacketClipboard implements IMessage {
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
+		buf.retain();
 		recievedBuf = buf;
+		
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class PacketClipboard implements IMessage {
 				TodoList list = TodoList.getListFromStack(stack);
 				list.readUpdatePacket(message.recievedBuf, false);
 				list.writeListToStack(stack);
+				message.recievedBuf.release();
 			}
 			return null;
 		}

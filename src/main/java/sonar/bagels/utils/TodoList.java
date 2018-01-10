@@ -79,14 +79,8 @@ public class TodoList {
 				break;
 			}
 		}
-		if (isClient) {
-			GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
-			if (screen instanceof GuiTodoList) {
-				((GuiTodoList) screen).reset(false);
-			}
-			return false;
-		} else {
-			return true;
-		}
+		if (isClient)
+			Bagels.proxy.updateTodoListGui();
+		return isClient;
 	}
 }

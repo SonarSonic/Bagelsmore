@@ -2,7 +2,6 @@
 	"forge_marker": 1,
 	"defaults": {
 		"model": "bagelsmore:Paper",
-		"transform": "forge:default-block",
 		"textures":{		
             "paper": "bagelsmore:model/paper",
             "particle": "bagelsmore:model/paper"
