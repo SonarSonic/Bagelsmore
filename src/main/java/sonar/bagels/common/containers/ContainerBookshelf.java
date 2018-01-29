@@ -10,6 +10,7 @@ import sonar.bagels.common.tileentity.TileBookshelf;
 import sonar.bagels.utils.BagelsHelper;
 import sonar.core.inventory.ContainerSonar;
 import sonar.core.inventory.TransferSlotsManager;
+import sonar.core.inventory.TransferSlotsManager.TransferType;
 
 public class ContainerBookshelf extends ContainerSonar {
 	private TileBookshelf entity;

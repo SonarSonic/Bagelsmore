@@ -2,7 +2,6 @@ package sonar.bagels.common.tileentity;
 
 import java.util.Optional;
 
-import mcmultipart.api.container.IPartInfo;
 import mcmultipart.api.item.ItemBlockMultipart;
 import mcmultipart.api.multipart.IMultipart;
 import mcmultipart.api.multipart.IMultipartTile;

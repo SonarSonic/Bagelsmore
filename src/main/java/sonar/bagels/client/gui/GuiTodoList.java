@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;

@@ -1,8 +1,5 @@
 package sonar.bagels.common.blocks;
 
-import java.util.Collections;
-import java.util.List;
-
 import mcmultipart.api.container.IPartInfo;
 import mcmultipart.api.slot.IPartSlot;
 import net.minecraft.block.state.IBlockState;
@@ -16,7 +13,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import sonar.bagels.api.DrawerPosition;
 import sonar.bagels.api.IDeskPart;
 import sonar.bagels.api.IDrawerContainer;
 import sonar.bagels.common.tileentity.TileDrawer;

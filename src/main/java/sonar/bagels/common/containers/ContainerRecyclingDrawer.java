@@ -3,12 +3,10 @@ package sonar.bagels.common.containers;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import sonar.bagels.common.tileentity.TileRecyclingDrawer;
 
 public class ContainerRecyclingDrawer extends Container {
 

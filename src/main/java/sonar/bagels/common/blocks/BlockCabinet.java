@@ -9,24 +9,19 @@ import com.google.common.collect.Lists;
 import mcmultipart.api.container.IPartInfo;
 import mcmultipart.api.slot.EnumCenterSlot;
 import mcmultipart.api.slot.IPartSlot;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import sonar.bagels.api.DeskPosition;
 import sonar.bagels.api.DeskType;
 import sonar.bagels.api.IDeskDrawer;
 import sonar.bagels.api.IDeskPart;
 import sonar.bagels.api.IDrawerContainer;
-import sonar.bagels.common.tileentity.TileDesk;
 import sonar.bagels.common.tileentity.TileCabinet;
 import sonar.core.common.block.SonarMaterials;
 import sonar.core.common.block.properties.SonarProperties;
@@ -41,14 +36,17 @@ public class BlockCabinet extends BlockFacingMultipart implements IDeskPart, IDr
 		this.type = type;
 	}	
 
+	@Override
 	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 		return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
 	}
 
+	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 		return new AxisAlignedBB(0.01, 0, 0.01, 1-0.01, 1 - (0.0625 / 2), 1-0.01);
 	}
 
+	@Override
 	public List<AxisAlignedBB> getOcclusionBoxes(IPartInfo part) {
 		return getAllCollisionBoxes(part.getState(), part.getPartWorld(), part.getPartPos());
 	}
@@ -98,6 +96,7 @@ public class BlockCabinet extends BlockFacingMultipart implements IDeskPart, IDr
 		return new TileCabinet();
 	}
 
+	@Override
 	public boolean testIntersection(IPartInfo self, IPartInfo otherPart) {
 		if (otherPart.getPart() instanceof IDeskDrawer) {
 			if (self.getState().getValue(SonarProperties.ORIENTATION) == otherPart.getState().getValue(SonarProperties.ORIENTATION)) {

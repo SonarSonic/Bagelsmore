@@ -1,9 +1,12 @@
 package sonar.bagels.client;
 
-import org.lwjgl.opengl.GL11;
+import static net.minecraft.client.renderer.GlStateManager.popMatrix;
+import static net.minecraft.client.renderer.GlStateManager.pushMatrix;
+import static net.minecraft.client.renderer.GlStateManager.rotate;
+import static net.minecraft.client.renderer.GlStateManager.scale;
+import static net.minecraft.client.renderer.GlStateManager.translate;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -24,32 +27,32 @@ public class SwordRenderer extends TileEntitySpecialRenderer<TileSwordMount> {
 			double vX = view.lastTickPosX + (view.posX - view.lastTickPosX) * (double) partialTicks;
 			double vY = view.lastTickPosY + (view.posY - view.lastTickPosY) * (double) partialTicks;
 			double vZ = view.lastTickPosZ + (view.posZ - view.lastTickPosZ) * (double) partialTicks;
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(te.getPos().getX() - vX, te.getPos().getY() - vY, te.getPos().getZ() - vZ);
+			pushMatrix();
+			translate(te.getPos().getX() - vX, te.getPos().getY() - vY, te.getPos().getZ() - vZ);
 			RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
-			GL11.glRotated(face.getHorizontalAngle(), 0, 1, 0);
+			rotate(face.getHorizontalAngle(), 0, 1, 0);
 			switch (face) {
 			case EAST:
-				GL11.glTranslated(0.41, 1 + 0.0425, -0.0625 * 2);
+				translate(0.41, 1 + 0.0425, -0.0625 * 2);
 				break;
 			case NORTH:
-				GL11.glTranslated(-1 + 0.41, 1 + 0.0425, -1 + 0.0625 * 2);
+				translate(-1 + 0.41, 1 + 0.0425, -1 + 0.0625 * 2);
 				break;
 			case SOUTH:
-				GL11.glTranslated(0.41, 1 + 0.0425, 0.0625 * 2);
+				translate(0.41, 1 + 0.0425, 0.0625 * 2);
 				break;
 			case WEST:
-				GL11.glTranslated(-1 + 0.41, 1 + 0.0425, 1 - 0.0625 * 2);
+				translate(-1 + 0.41, 1 + 0.0425, 1 - 0.0625 * 2);
 				break;
 			default:
 				break;
 			}
-			GL11.glScaled(1, 1, 1);
-			GL11.glRotated(-45, 0, 0, 1);
-			GL11.glRotated(-90, 0, 0, 1);
+			scale(1, 1, 1);
+			rotate(-45, 0, 0, 1);
+			rotate(-90, 0, 0, 1);
 			Minecraft.getMinecraft().getRenderItem().renderItem(stack, TransformType.GROUND);
 
-			GlStateManager.popMatrix();
+			popMatrix();
 
 		}
 

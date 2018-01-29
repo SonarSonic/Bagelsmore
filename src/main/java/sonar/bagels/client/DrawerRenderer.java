@@ -1,12 +1,25 @@
 package sonar.bagels.client;
 
+import static net.minecraft.client.renderer.GlStateManager.blendFunc;
+import static net.minecraft.client.renderer.GlStateManager.disableBlend;
+import static net.minecraft.client.renderer.GlStateManager.disableCull;
+import static net.minecraft.client.renderer.GlStateManager.disableLighting;
+import static net.minecraft.client.renderer.GlStateManager.enableBlend;
+import static net.minecraft.client.renderer.GlStateManager.popAttrib;
+import static net.minecraft.client.renderer.GlStateManager.popMatrix;
+import static net.minecraft.client.renderer.GlStateManager.pushAttrib;
+import static net.minecraft.client.renderer.GlStateManager.pushMatrix;
+import static net.minecraft.client.renderer.GlStateManager.rotate;
+import static net.minecraft.client.renderer.GlStateManager.scale;
+import static net.minecraft.client.renderer.GlStateManager.shadeModel;
+import static net.minecraft.client.renderer.GlStateManager.translate;
+
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
@@ -36,16 +49,16 @@ public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRende
 		public void renderSpecials(T drawer, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 			RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 			for (int i = 0; i < drawer.getSizeInventory(); i++) {
-				GlStateManager.pushMatrix();
+				pushMatrix();
 				int layer = i / 16;
 				int row = (i - (layer * 16)) / 4;
 				int colomn = i - (layer * 16) - (row * 4);
-				GlStateManager.translate(row * (0.0625 * 5), layer * 0.0625 * 4.5, colomn * (0.0625 * 5));
+				translate(row * (0.0625 * 5), layer * 0.0625 * 4.5, colomn * (0.0625 * 5));
 				ItemStack stack = drawer.getStackInSlot(i);
 				if (!stack.isEmpty() && stack.getCount() != 0) {
 					renderItem.renderItem(stack, TransformType.GROUND);
 				}
-				GlStateManager.popMatrix();
+				popMatrix();
 			}
 
 		}
@@ -58,20 +71,20 @@ public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRende
 			for (int i = 0; i < tanks.length; i++) {
 				FluidTank tank = tanks[i];
 				if (tank.getFluidAmount() != 0 && tank.getFluid() != null) {
-					GlStateManager.pushAttrib();
-					GlStateManager.pushMatrix();
-					GL11.glDisable(GL11.GL_LIGHTING);
-					GL11.glDisable(GL11.GL_BLEND);
+					pushAttrib();
+					pushMatrix();
+					disableLighting();
+					disableBlend();
 					ResourceLocation fluid = tank.getFluid().getFluid().getStill();
 					double ySize = (-0.0625 * 6.5) * ((double) tank.getFluidAmount() / tank.getCapacity());
-					GlStateManager.translate(0.0, 0, -0.2);
-					this.drawTexturedModalRect(i == 1 ? -0.0625 * 2 - 0.05 : 0.0625 * 12 - 0.05, -0.0625 * 0.5, fluid, 0.4, 0.0625 * 3.5 - ySize);
-					GlStateManager.translate(0.0, 0, 0.18);
-					GlStateManager.rotate(90, 1, 0, 0);
-					GlStateManager.translate(i == 1 ? 0.0625 : 0.0625 * 11, 0, -0.0625 * 3 + ySize);
-					this.drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, fluid, 0.7, 1.5);
-					GlStateManager.popMatrix();
-					GlStateManager.popAttrib();
+					translate(0.0, 0, -0.2);
+					drawTexturedModalRect(i == 1 ? -0.0625 * 2 - 0.05 : 0.0625 * 12 - 0.05, -0.0625 * 0.5, fluid, 0.4, 0.0625 * 3.5 - ySize);
+					translate(0.0, 0, 0.18);
+					rotate(90, 1, 0, 0);
+					translate(i == 1 ? 0.0625 : 0.0625 * 11, 0, -0.0625 * 3 + ySize);
+					drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, fluid, 0.7, 1.5);
+					popMatrix();
+					popAttrib();
 
 				}
 			}
@@ -108,12 +121,12 @@ public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRende
 
 	public void renderLiquidInDrawer(ResourceLocation location, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
 
-		GlStateManager.pushAttrib();
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GlStateManager.rotate(90, 1, 0, 0);
-		GlStateManager.translate(0, 0, -0.0625 * 5);
+		pushAttrib();
+		disableLighting();
+		rotate(90, 1, 0, 0);
+		translate(0, 0, -0.0625 * 5);
 		drawTexturedModalRect(-0.0625 * 3 - 0.05, -0.0625 * 3, location, 1.45, 1.45);
-		GlStateManager.popAttrib();
+		popAttrib();
 	}
 
 	public void renderSpecials(T drawer, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {}
@@ -127,37 +140,37 @@ public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRende
 		double dX = view.lastTickPosX + (view.posX - view.lastTickPosX) * (double) partialTicks;
 		double dY = view.lastTickPosY + (view.posY - view.lastTickPosY) * (double) partialTicks;
 		double dZ = view.lastTickPosZ + (view.posZ - view.lastTickPosZ) * (double) partialTicks;
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(-dX, -dY, -dZ);
-		GlStateManager.disableCull();
+		pushMatrix();
+		translate(-dX, -dY, -dZ);
+		disableCull();
 
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder buffer = tessellator.getBuffer();
 		this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 		RenderHelper.disableStandardItemLighting();
-		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GlStateManager.enableBlend();
-		GlStateManager.disableCull();
+		blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		enableBlend();
+		disableCull();
 
 		if (Minecraft.isAmbientOcclusionEnabled()) {
-			GlStateManager.shadeModel(GL11.GL_SMOOTH);
+			shadeModel(GL11.GL_SMOOTH);
 		} else {
-			GlStateManager.shadeModel(GL11.GL_FLAT);
+			shadeModel(GL11.GL_FLAT);
 		}
-		GlStateManager.translate(0, drawer.getDrawerPosition().offsetY(), 0);
+		translate(0, drawer.getDrawerPosition().offsetY(), 0);
 		if (drawer.isDrawerOpen()) {
 			switch (face) {
 			case EAST:
-				GlStateManager.translate(0.4, 0, 0);
+				translate(0.4, 0, 0);
 				break;
 			case NORTH:
-				GlStateManager.translate(0, 0, -0.4);
+				translate(0, 0, -0.4);
 				break;
 			case SOUTH:
-				GlStateManager.translate(0, 0, 0.4);
+				translate(0, 0, 0.4);
 				break;
 			case WEST:
-				GlStateManager.translate(-0.4, 0, 0);
+				translate(-0.4, 0, 0);
 				break;
 			default:
 				break;
@@ -175,33 +188,33 @@ public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRende
 
 		RenderHelper.enableStandardItemLighting();
 		if (drawer.isDrawerOpen() || drawer.shouldRenderSpecials) {
-			GlStateManager.translate(drawer.getPos().getX(), drawer.getPos().getY(), drawer.getPos().getZ());
+			translate(drawer.getPos().getX(), drawer.getPos().getY(), drawer.getPos().getZ());
 			switch (face) {
 
 			case EAST:
-				GL11.glRotated(-90, 0, 1, 0);
-				GL11.glTranslated(0, 0, -1);
+				rotate(-90, 0, 1, 0);
+				translate(0, 0, -1);
 				break;
 			case NORTH:
 				break;
 			case SOUTH:
-				GL11.glRotated(180, 0, 1, 0);
-				GL11.glTranslated(-1, 0, -1);
+				rotate(180, 0, 1, 0);
+				translate(-1, 0, -1);
 				break;
 			case WEST:
-				GL11.glRotated(90, 0, 1, 0);
-				GL11.glTranslated(-1, 0, 0);
+				rotate(90, 0, 1, 0);
+				translate(-1, 0, 0);
 				break;
 			default:
 				break;
 
 			}
 
-			GlStateManager.scale(0.5, 0.5, 0.5);
-			GlStateManager.translate(0.0625 * 8.5, 0.0625 * 4, 0.0625 * 5);
+			scale(0.5, 0.5, 0.5);
+			translate(0.0625 * 8.5, 0.0625 * 4, 0.0625 * 5);
 			renderSpecials(drawer, x, y, z, partialTicks, destroyStage, alpha);
 		}
-		GlStateManager.popMatrix();
+		popMatrix();
 
 	}
 

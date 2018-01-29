@@ -1,6 +1,5 @@
 package sonar.bagels.api;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
 import sonar.bagels.Bagels;
