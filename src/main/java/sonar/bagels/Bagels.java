@@ -54,16 +54,10 @@ import sonar.core.SonarCrafting;
 import sonar.core.SonarRegister;
 import sonar.core.registries.SonarRegistryMultipart;
 
-@Mod(modid = Bagels.MODID, name = "bagelsmore", version = Bagels.VERSION, acceptedMinecraftVersions = Bagels.MC_VERSIONS, dependencies = "required-after:sonarcore@[" + Bagels.SONAR_CORE + ",);" + "required-after:mcmultipart@[" + Bagels.MCMULTIPART + ",);")
+@Mod(modid = BagelsConstants.MODID, name = "bagelsmore", version = BagelsConstants.VERSION, acceptedMinecraftVersions = BagelsConstants.MC_VERSIONS, dependencies = "required-after:sonarcore@[" + BagelsConstants.SONAR_CORE + ",);" + "required-after:mcmultipart@[" + BagelsConstants.MCMULTIPART + ",);")
 public class Bagels {
 
-	public static final String MODID = "bagelsmore";
-	public static final String VERSION = "2.0.0";
-	public static final String SONAR_CORE = "5.0.5";
-	public static final String MCMULTIPART = "2.4.1";
-	public static final String MC_VERSIONS = "[1.12,1.12.2]";
-
-	@Instance(MODID)
+	@Instance(BagelsConstants.MODID)
 	public static Bagels instance;
 
 	@SidedProxy(clientSide = "sonar.bagels.network.BagelClient", serverSide = "sonar.bagels.network.BagelCommon")
@@ -71,7 +65,7 @@ public class Bagels {
 
 	public static SimpleNetworkWrapper network;
 
-	public static CreativeTabs tab = new CreativeTabs(MODID) {
+	public static CreativeTabs tab = new CreativeTabs(BagelsConstants.MODID) {
 		@Override
 		public ItemStack getTabIconItem() {
 			return new ItemStack(deskFancy);
@@ -94,37 +88,37 @@ public class Bagels {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		// decoration blocks
-		fancyPlanks = SonarRegister.addBlock(MODID, tab, "FancyPlanks", new Block(Material.WOOD).setHardness(0.4f));
-		treatedPlanks = SonarRegister.addBlock(MODID, tab, "TreatedPlanks", new Block(Material.WOOD).setHardness(0.4f));
-		fancyStone = SonarRegister.addBlock(MODID, tab, "FancyStone", new Block(Material.WOOD).setHardness(0.4f));
+		fancyPlanks = SonarRegister.addBlock(BagelsConstants.MODID, tab, "FancyPlanks", new Block(Material.WOOD).setHardness(0.4f));
+		treatedPlanks = SonarRegister.addBlock(BagelsConstants.MODID, tab, "TreatedPlanks", new Block(Material.WOOD).setHardness(0.4f));
+		fancyStone = SonarRegister.addBlock(BagelsConstants.MODID, tab, "FancyStone", new Block(Material.WOOD).setHardness(0.4f));
 
 		// cabinets
-		cabinetFancy = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.FANCY), "CabinetFancy").setProperties(0.4F, 20.0F));
-		cabinetStone = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.STONE), "CabinetStone").setProperties(0.4F, 20.0F));
-		cabinetTreated = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.TREATED), "CabinetTreated").setProperties(0.4F, 20.0F));
+		cabinetFancy = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.FANCY), "CabinetFancy").setProperties(0.4F, 20.0F));
+		cabinetStone = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.STONE), "CabinetStone").setProperties(0.4F, 20.0F));
+		cabinetTreated = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockCabinet(DeskType.TREATED), "CabinetTreated").setProperties(0.4F, 20.0F));
 		
 		// desks
-		deskFancy = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.FANCY), "DeskFancy").setProperties(0.4F, 20.0F));
-		deskStone = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.STONE), "DeskStone").setProperties(0.4F, 20.0F));
-		deskTreated = SonarRegister.addBlock(MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.TREATED), "DeskTreated").setProperties(0.4F, 20.0F));
+		deskFancy = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.FANCY), "DeskFancy").setProperties(0.4F, 20.0F));
+		deskStone = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.STONE), "DeskStone").setProperties(0.4F, 20.0F));
+		deskTreated = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskItem.SonarRegistryDesk(new BlockDesk(DeskType.TREATED), "DeskTreated").setProperties(0.4F, 20.0F));
 
 		// drawers
-		smallDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmallStorageDrawer(), "DrawerSmall", TileStorageDrawer.Small.class).setProperties(0.4F, 20.0F));
-		largeDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockLargeStorageDrawer(), "DrawerLarge", TileStorageDrawer.Large.class).setProperties(0.4F, 20.0F));
-		smeltingDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmeltingDrawer(), "SmeltingDrawer", TileSmeltingDrawer.class).setProperties(0.4F, 20.0F));
-		recyclingDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockRecyclingDrawer(), "RecyclingDrawer", TileRecyclingDrawer.class).setProperties(0.4F, 20.0F));
-		enderDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockEnderDrawer(), "EnderDrawer", TileEnderDrawer.class).setProperties(0.4F, 20.0F));
-		fluidDrawer = SonarRegister.addBlock(MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockFluidDrawer(), "FluidDrawer", TileFluidDrawer.class).setProperties(0.4F, 20.0F));
+		smallDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmallStorageDrawer(), "DrawerSmall", TileStorageDrawer.Small.class).setProperties(0.4F, 20.0F));
+		largeDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockLargeStorageDrawer(), "DrawerLarge", TileStorageDrawer.Large.class).setProperties(0.4F, 20.0F));
+		smeltingDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockSmeltingDrawer(), "SmeltingDrawer", TileSmeltingDrawer.class).setProperties(0.4F, 20.0F));
+		recyclingDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockRecyclingDrawer(), "RecyclingDrawer", TileRecyclingDrawer.class).setProperties(0.4F, 20.0F));
+		enderDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockEnderDrawer(), "EnderDrawer", TileEnderDrawer.class).setProperties(0.4F, 20.0F));
+		fluidDrawer = SonarRegister.addBlock(BagelsConstants.MODID, tab, new DeskDrawerItem.SonarRegistryDrawer(new BlockFluidDrawer(), "FluidDrawer", TileFluidDrawer.class).setProperties(0.4F, 20.0F));
 
 		// desk decoration
-		bookshelf = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockBookshelf().setHardness(0.4f), "Bookshelf", TileBookshelf.class));
-		blockPaper = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockPaper().setHardness(0.4f), "Paper", TilePaper.class));
-		swordMount = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockSwordMount().setHardness(0.4f), "SwordMount", TileSwordMount.class));
-		candle = SonarRegister.addBlock(MODID, tab, new SonarRegistryMultipart(new BlockCandle().setHardness(0.4f), "Candle", TileCandle.class));
+		bookshelf = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockBookshelf().setHardness(0.4f), "Bookshelf", TileBookshelf.class));
+		blockPaper = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockPaper().setHardness(0.4f), "Paper", TilePaper.class));
+		swordMount = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockSwordMount().setHardness(0.4f), "SwordMount", TileSwordMount.class));
+		candle = SonarRegister.addBlock(BagelsConstants.MODID, tab, new SonarRegistryMultipart(new BlockCandle().setHardness(0.4f), "Candle", TileCandle.class));
 
 		// items
-		clipboard = SonarRegister.addItem(MODID, tab, "Clipboard", new Clipboard().setMaxStackSize(1));
-		clipboardEmpty = SonarRegister.addItem(MODID, tab, "ClipboardEmpty", new Item().setMaxStackSize(1));
+		clipboard = SonarRegister.addItem(BagelsConstants.MODID, tab, "Clipboard", new Clipboard().setMaxStackSize(1));
+		clipboardEmpty = SonarRegister.addItem(BagelsConstants.MODID, tab, "ClipboardEmpty", new Item().setMaxStackSize(1));
 
 		// additional tile entities
 		GameRegistry.registerTileEntity(TileDesk.LEFT.class, "AbstractDeskLeft");
@@ -152,31 +146,31 @@ public class Bagels {
 		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_S);
 		GameRegistry.findRegistry(IPartSlot.class).register(EnumCandleSlot.CANDLE_W);
 		// shaped recipes
-		SonarCrafting.addShapedOre(MODID, new ItemStack(fancyPlanks, 16), new Object[] { "WPW", "P P", "WPW", 'P', "plankWood", 'W', "logWood" });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(deskFancy, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyPlanks, 'C', cabinetFancy });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(deskTreated, 1), new Object[] { "CPC", "   ", "   ", 'P', treatedPlanks, 'C', cabinetTreated });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(deskStone, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyStone, 'C', cabinetStone });		
-		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetFancy, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyPlanks });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetTreated, 1), new Object[] { "PPP", "P P", "PPP", 'P', treatedPlanks });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(cabinetStone, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyStone });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(smallDrawer, 1), new Object[] { "   ", "P N", "PPP", 'P', fancyPlanks, 'N', Items.GOLD_NUGGET });
-		SonarCrafting.addShapedOre(MODID, new ItemStack(bookshelf, 1), new Object[] { "PPP", "   ", "   ", 'P', fancyPlanks });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(fancyPlanks, 16), new Object[] { "WPW", "P P", "WPW", 'P', "plankWood", 'W', "logWood" });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(deskFancy, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyPlanks, 'C', cabinetFancy });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(deskTreated, 1), new Object[] { "CPC", "   ", "   ", 'P', treatedPlanks, 'C', cabinetTreated });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(deskStone, 1), new Object[] { "CPC", "   ", "   ", 'P', fancyStone, 'C', cabinetStone });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(cabinetFancy, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyPlanks });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(cabinetTreated, 1), new Object[] { "PPP", "P P", "PPP", 'P', treatedPlanks });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(cabinetStone, 1), new Object[] { "PPP", "P P", "PPP", 'P', fancyStone });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(smallDrawer, 1), new Object[] { "   ", "P N", "PPP", 'P', fancyPlanks, 'N', Items.GOLD_NUGGET });
+		SonarCrafting.addShapedOre(BagelsConstants.MODID, new ItemStack(bookshelf, 1), new Object[] { "PPP", "   ", "   ", 'P', fancyPlanks });
 
 		// shapeless recipes
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(fancyStone, 2), new Object[] { fancyPlanks, Blocks.STONE });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(treatedPlanks, 2), new Object[] { fancyPlanks, "plankWood" });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(fancyStone, 2), new Object[] { fancyPlanks, Blocks.STONE });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(treatedPlanks, 2), new Object[] { fancyPlanks, "plankWood" });
 
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(largeDrawer, 1), new Object[] { smallDrawer, smallDrawer });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(smallDrawer, 2), new Object[] { largeDrawer });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(smeltingDrawer, 1), new Object[] { smallDrawer, Blocks.FURNACE });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(recyclingDrawer, 1), new Object[] { smallDrawer, Blocks.OBSIDIAN });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(enderDrawer, 1), new Object[] { recyclingDrawer, Blocks.ENDER_CHEST });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(fluidDrawer, 1), new Object[] { largeDrawer, Items.BUCKET });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(clipboardEmpty, 1), new Object[] { fancyPlanks, Items.STICK });
-		SonarCrafting.addShapelessOre(MODID, new ItemStack(candle, 1), new Object[] { new ItemStack(Items.COAL, 1, 1), "string", Items.CLAY_BALL});
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(largeDrawer, 1), new Object[] { smallDrawer, smallDrawer });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(smallDrawer, 2), new Object[] { largeDrawer });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(smeltingDrawer, 1), new Object[] { smallDrawer, Blocks.FURNACE });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(recyclingDrawer, 1), new Object[] { smallDrawer, Blocks.OBSIDIAN });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(enderDrawer, 1), new Object[] { recyclingDrawer, Blocks.ENDER_CHEST });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(fluidDrawer, 1), new Object[] { largeDrawer, Items.BUCKET });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(clipboardEmpty, 1), new Object[] { fancyPlanks, Items.STICK });
+		SonarCrafting.addShapelessOre(BagelsConstants.MODID, new ItemStack(candle, 1), new Object[] { new ItemStack(Items.COAL, 1, 1), "string", Items.CLAY_BALL});
 
 		// custom recipes
-		ResourceLocation clipBoardRecipe = SonarCrafting.getRecipeResourceLocation(MODID, new ItemStack(clipboard));
+		ResourceLocation clipBoardRecipe = SonarCrafting.getRecipeResourceLocation(BagelsConstants.MODID, new ItemStack(clipboard));
 		SonarCrafting.registerForgeRecipe(clipBoardRecipe, new TodoListRecipe(clipBoardRecipe, new ItemStack(clipboard), new Object[] { Items.PAPER, Bagels.clipboardEmpty }));
 	}
 

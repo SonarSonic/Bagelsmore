@@ -3,15 +3,12 @@
 "modid": "bagelsmore",
 "name": "Bagelsmore: The Return",
 "description": "Take a desk on me.",
-"version": "",
-"mcversion": "1.10.2-12.18.1.2011",
+"version": "${version}",
+"mcversion": "${mcversion}",
 "updateUrl": "",
 "authors": ["Ollie Lansdell"],
 "credits": "Created by Ollie Lansdell",
 "logoFile": "",
-"screenshots": [],
-"requiredMods": ["mcmultipart"],
-"dependencies": ["mcmultipart"],
-"useDependencyInformation": true
+"screenshots": []
 }
 ]
