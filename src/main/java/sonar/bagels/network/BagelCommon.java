@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 import sonar.bagels.Bagels;
+import sonar.bagels.BagelsConstants;
 
 public class BagelCommon {
 
@@ -16,7 +17,7 @@ public class BagelCommon {
 
 	public static void registerPackets() {
 		if (Bagels.network == null) {
-			Bagels.network = NetworkRegistry.INSTANCE.newSimpleChannel(Bagels.MODID);
+			Bagels.network = NetworkRegistry.INSTANCE.newSimpleChannel(BagelsConstants.MODID);
 		}
 
 		Bagels.network.registerMessage(PacketToDoList.Handler.class, PacketToDoList.class, 0, Side.SERVER);

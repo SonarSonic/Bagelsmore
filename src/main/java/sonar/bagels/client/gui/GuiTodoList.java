@@ -1,17 +1,13 @@
 package sonar.bagels.client.gui;
 
-import java.awt.Color;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.input.Keyboard;
 import sonar.bagels.Bagels;
+import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerTodoList;
 import sonar.bagels.common.tileentity.TilePaper;
 import sonar.bagels.network.PacketClipboard;
@@ -19,9 +15,13 @@ import sonar.bagels.network.PacketToDoList;
 import sonar.bagels.utils.TodoList;
 import sonar.core.client.gui.GuiSonar;
 
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+
 @SideOnly(Side.CLIENT)
 public abstract class GuiTodoList extends GuiSonar {
-	private static final ResourceLocation background = new ResourceLocation(Bagels.MODID + ":textures/gui/todo_list.png");
+	private static final ResourceLocation background = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/todo_list.png");
 	public final TodoList paper;
 	private GuiTextField listName;
 	private ArrayList<GuiTextField> targets = new ArrayList();

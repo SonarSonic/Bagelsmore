@@ -22,29 +22,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import sonar.bagels.api.DeskType;
 import sonar.bagels.api.DrawerPosition;
 import sonar.bagels.api.EnumCandleSlot;
-import sonar.bagels.common.blocks.BlockBookshelf;
-import sonar.bagels.common.blocks.BlockCabinet;
-import sonar.bagels.common.blocks.BlockCandle;
-import sonar.bagels.common.blocks.BlockDesk;
-import sonar.bagels.common.blocks.BlockEnderDrawer;
-import sonar.bagels.common.blocks.BlockFluidDrawer;
-import sonar.bagels.common.blocks.BlockLargeStorageDrawer;
-import sonar.bagels.common.blocks.BlockPaper;
-import sonar.bagels.common.blocks.BlockRecyclingDrawer;
-import sonar.bagels.common.blocks.BlockSmallStorageDrawer;
-import sonar.bagels.common.blocks.BlockSmeltingDrawer;
-import sonar.bagels.common.blocks.BlockSwordMount;
-import sonar.bagels.common.tileentity.TileBookshelf;
-import sonar.bagels.common.tileentity.TileCabinet;
-import sonar.bagels.common.tileentity.TileCandle;
-import sonar.bagels.common.tileentity.TileDesk;
-import sonar.bagels.common.tileentity.TileEnderDrawer;
-import sonar.bagels.common.tileentity.TileFluidDrawer;
-import sonar.bagels.common.tileentity.TilePaper;
-import sonar.bagels.common.tileentity.TileRecyclingDrawer;
-import sonar.bagels.common.tileentity.TileSmeltingDrawer;
-import sonar.bagels.common.tileentity.TileStorageDrawer;
-import sonar.bagels.common.tileentity.TileSwordMount;
+import sonar.bagels.common.blocks.*;
+import sonar.bagels.common.tileentity.*;
 import sonar.bagels.items.Clipboard;
 import sonar.bagels.items.DeskDrawerItem;
 import sonar.bagels.items.DeskItem;
@@ -54,7 +33,7 @@ import sonar.core.SonarCrafting;
 import sonar.core.SonarRegister;
 import sonar.core.registries.SonarRegistryMultipart;
 
-@Mod(modid = BagelsConstants.MODID, name = "bagelsmore", version = BagelsConstants.VERSION, acceptedMinecraftVersions = BagelsConstants.MC_VERSIONS, dependencies = "required-after:sonarcore@[" + BagelsConstants.SONAR_CORE + ",);" + "required-after:mcmultipart@[" + BagelsConstants.MCMULTIPART + ",);")
+@Mod(modid = BagelsConstants.MODID, name = "bagelsmore", version = BagelsConstants.VERSION, acceptedMinecraftVersions = BagelsConstants.MC_VERSIONS, dependencies = BagelsConstants.DEPENDENCIES)
 public class Bagels {
 
 	@Instance(BagelsConstants.MODID)

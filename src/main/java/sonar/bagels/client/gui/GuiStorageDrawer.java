@@ -4,15 +4,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sonar.bagels.Bagels;
+import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerStorageDrawer;
 import sonar.bagels.common.tileentity.TileStorageDrawer;
 import sonar.core.client.gui.GuiSonar;
 
 @SideOnly(Side.CLIENT)
 public class GuiStorageDrawer extends GuiSonar {
-	private static final ResourceLocation SMALL = new ResourceLocation(Bagels.MODID + ":textures/gui/small_drawer.png");
-	private static final ResourceLocation LARGE = new ResourceLocation(Bagels.MODID + ":textures/gui/large_drawer.png");
+	private static final ResourceLocation SMALL = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/small_drawer.png");
+	private static final ResourceLocation LARGE = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/large_drawer.png");
 	private final TileStorageDrawer inv;
 
 	public GuiStorageDrawer(TileStorageDrawer inv) {

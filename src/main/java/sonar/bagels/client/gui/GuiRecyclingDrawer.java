@@ -4,13 +4,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sonar.bagels.Bagels;
+import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerRecyclingDrawer;
 import sonar.core.client.gui.GuiSonar;
 
 @SideOnly(Side.CLIENT)
 public class GuiRecyclingDrawer extends GuiSonar {
-	private static final ResourceLocation background = new ResourceLocation(Bagels.MODID + ":textures/gui/recycling_drawer.png");
+	private static final ResourceLocation background = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/recycling_drawer.png");
 
 	public GuiRecyclingDrawer(EntityPlayer player) {
 		super(new ContainerRecyclingDrawer(player));

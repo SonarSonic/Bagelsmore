@@ -4,14 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import sonar.bagels.Bagels;
+import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerBookshelf;
 import sonar.bagels.common.tileentity.TileBookshelf;
 import sonar.core.client.gui.GuiSonar;
 
 @SideOnly(Side.CLIENT)
 public class GuiBookshelf extends GuiSonar {
-	private static final ResourceLocation background = new ResourceLocation(Bagels.MODID + ":textures/gui/bookshelf.png");
+	private static final ResourceLocation background = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/bookshelf.png");
 	private final TileBookshelf inv;
 
 	public GuiBookshelf(TileBookshelf inv) {
