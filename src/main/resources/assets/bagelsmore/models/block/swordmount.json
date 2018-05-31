@@ -1,0 +1,41 @@
+{
+    "parent":"block/block",
+    "display": {
+        "gui": {
+            "rotation": [ 10, 180, 0 ],
+            "translation": [ 0, -9, 8],
+            "scale":[ 0.8, 0.8, 0.8 ]
+        }
+    },
+    "textures":{        
+       "sword": "bagelsmore:model/sword_mount"
+    },
+    "elements": [
+        {
+            "name": "Support1",
+            "from": [ 3.0, 15.5, 13.5 ], 
+            "to": [ 13.0, 16.0, 14.5 ], 
+            "faces": {
+                "north": { "texture": "#sword", "uv": [ 0.0, 1.0, 10.0, 1.5 ] },
+                "east": { "texture": "#sword", "uv": [ 0.0, 1.0, 1.0, 1.5 ] },
+                "south": { "texture": "#sword", "uv": [ 0.0, 1.0, 10.0, 1.5 ] },
+                "west": { "texture": "#sword", "uv": [ 0.0, 1.0, 1.0, 1.5 ] },
+                "up": { "texture": "#sword", "uv": [ 0.0, 0.0, 10.0, 1.0 ] },
+                "down": { "texture": "#sword", "uv": [ 0.0, 1.0, 10.0, 2.0 ] }
+            }
+        },
+        {
+            "name": "Support2",
+            "from": [ 3.0, 16.0, 14.0 ], 
+            "to": [ 13.0, 16.5, 14.5 ], 
+            "faces": {
+                "north": { "texture": "#sword", "uv": [ 0.0, 1.0, 10.0, 1.5 ] },
+                "east": { "texture": "#sword", "uv": [ 0.0, 1.0, 0.5, 1.5 ] },
+                "south": { "texture": "#sword", "uv": [ 0.0, 1.0, 10.0, 1.5 ] },
+                "west": { "texture": "#sword", "uv": [ 0.0, 1.0, 0.5, 1.5 ] },
+                "up": { "texture": "#sword", "uv": [ 0.0, 0.0, 10.0, 0.5 ] },
+                "down": { "texture": "#sword", "uv": [ 0.0, 0.0, 10.0, 0.5 ] }
+            }
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "bagelsmore:TableTop",
+		"textures":{		
+            "particle": "bagelsmore:model/treated/table_top",        
+            "table": "bagelsmore:model/treated/table_middle",
+            "tableRight": "bagelsmore:model/treated/table_right",
+            "tableLeft": "bagelsmore:model/treated/table_left",
+            "0": "bagelsmore:model/treated/table_dark",
+            "1": "bagelsmore:model/treated/table_top",
+            "2": "bagelsmore:model/treated/table_side",
+            "3": "bagelsmore:model/treated/table_side"
+		}
+	},
+	"variants": {
+		"inventory": [{		
+            "submodel": {
+                "left": {"model": "bagelsmore:DeskModelLeft"},
+                "right": {"model": "bagelsmore:DeskModelRight"},                
+                "paper": {"model": "bagelsmore:Paper"},     
+                "sword": {"model": "bagelsmore:SwordMount"}
+            }            
+        }],
+		"facing": {
+			"north": {},
+			"south": {"y": 180},
+			"west": {"y": 270},
+			"east": {"y": 90},			
+            "down": {},
+            "up": {}
+		},
+        "table": {
+            "left": {
+                "textures":{"table": "bagelsmore:model/treated/table_right"},
+                "submodel": {"table": {"model": "bagelsmore:DeskModel"}}
+            },
+            "middle": {
+                "textures":{"table": "bagelsmore:model/treated/table_middle"}
+            },
+            "right": {
+                "textures":{"table": "bagelsmore:model/treated/table_left"},
+                "submodel": {"table": {"model": "bagelsmore:DeskModel"}}
+            }
+        }
+	}
+}
