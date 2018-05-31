@@ -40,7 +40,7 @@ import sonar.bagels.common.tileentity.TileEnderDrawer;
 import sonar.bagels.common.tileentity.TileFluidDrawer;
 import sonar.bagels.common.tileentity.TileRecyclingDrawer;
 import sonar.bagels.common.tileentity.TileSmeltingDrawer;
-import sonar.core.inventory.ISonarInventoryTile;
+import sonar.core.api.inventories.ISonarInventoryTile;
 
 public class DrawerRenderer<T extends TileDrawer> extends TileEntitySpecialRenderer<T> {
 

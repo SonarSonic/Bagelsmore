@@ -10,7 +10,7 @@ import sonar.bagels.utils.BagelsHelper;
 import sonar.core.api.IFlexibleGui;
 import sonar.core.integration.multipart.SonarMultipartHelper;
 import sonar.core.integration.multipart.TileInventoryMultipart;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.inventory.SonarInventoryTile;
 import sonar.core.network.sync.SyncTagType;
 
 public class TileBookshelf extends TileInventoryMultipart implements IFlexibleGui {
@@ -18,7 +18,7 @@ public class TileBookshelf extends TileInventoryMultipart implements IFlexibleGu
 	public SyncTagType.INT books = new SyncTagType.INT("books");
 
 	public TileBookshelf() {
-		inv = new SonarInventory(this, 7);
+		inv = new SonarInventoryTile(this, 7);
 		syncList.addParts(books, inv);
 	}
 	

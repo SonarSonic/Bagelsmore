@@ -23,9 +23,9 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import sonar.bagels.api.DrawerType;
 import sonar.core.api.IFlexibleGui;
-import sonar.core.inventory.ISonarInventory;
-import sonar.core.inventory.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.api.inventories.ISonarInventory;
+import sonar.core.api.inventories.ISonarInventoryTile;
+import sonar.core.inventory.SonarInventoryTile;
 
 public class TileSmeltingDrawer extends TileDrawer implements IFlexibleGui, ITickable, ISonarInventoryTile {
 
@@ -38,7 +38,7 @@ public class TileSmeltingDrawer extends TileDrawer implements IFlexibleGui, ITic
 
 	public TileSmeltingDrawer() {
 		super();
-		inv = new SonarInventory(this, 3);
+		inv = new SonarInventoryTile(this, 3);
 		syncList.addParts(inv);
 
 	}

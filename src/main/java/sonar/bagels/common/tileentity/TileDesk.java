@@ -24,9 +24,9 @@ import sonar.core.api.IFlexibleGui;
 import sonar.core.api.utils.BlockCoords;
 import sonar.core.helpers.NBTHelper.SyncType;
 import sonar.core.integration.multipart.TileSonarMultipart;
-import sonar.core.inventory.ISonarInventory;
-import sonar.core.inventory.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.api.inventories.ISonarInventory;
+import sonar.core.api.inventories.ISonarInventoryTile;
+import sonar.core.inventory.SonarInventoryTile;
 import sonar.core.network.FlexibleGuiHandler;
 import sonar.core.network.sync.SyncCoords;
 
@@ -103,10 +103,10 @@ public class TileDesk extends TileSonarMultipart {
 
 	public static class RIGHT extends TileDesk implements ISonarInventoryTile, IFlexibleGui {
 
-		protected ISonarInventory inv;
+		protected SonarInventoryTile inv;
 
 		public RIGHT() {
-			inv = new SonarInventory(this, 10);
+			inv = new SonarInventoryTile(this, 10);
 			syncList.addParts(inv);
 		}
 
@@ -133,12 +133,12 @@ public class TileDesk extends TileSonarMultipart {
 
 		@Override
 		public Object getServerElement(Object obj, int id, World world, EntityPlayer player, NBTTagCompound tag) {
-			return new ContainerDeskCrafting(player, this);
+			return new ContainerDeskCrafting(player, this.inv);
 		}
 
 		@Override
 		public Object getClientElement(Object obj, int id, World world, EntityPlayer player, NBTTagCompound tag) {
-			return new GuiDeskCrafting(player, this);
+			return new GuiDeskCrafting(player, inv);
 		}
 
 	}

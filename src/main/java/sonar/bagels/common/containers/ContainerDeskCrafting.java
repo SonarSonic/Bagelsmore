@@ -13,96 +13,19 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import sonar.core.inventory.ISonarInventoryTile;
+import sonar.core.inventory.SonarInventory;
 
 public class ContainerDeskCrafting extends Container {
-	private final ISonarInventoryTile craftingPart;
+	private final SonarInventory inv;
 
 	public CustomInventoryCrafting craftMatrix;
 	public CustomCraftResult craftResult;
 	public EntityPlayer player;
 
-	public static class CustomCraftResult extends InventoryCraftResult {
-		public ISonarInventoryTile part;
-		public int slot;
-
-		public CustomCraftResult(ISonarInventoryTile tileDeskCraftingPart, int slot) {
-			this.part = tileDeskCraftingPart;
-			this.slot = slot;
-		}
-
-		@Nullable
-		public ItemStack getStackInSlot(int index) {
-			return part.getStackInSlot(slot);
-		}
-
-		public ItemStack decrStackSize(int index, int count) {
-			return ItemStackHelper.getAndRemove(part.slots(), slot);
-		}
-
-		public ItemStack removeStackFromSlot(int index) {
-			return ItemStackHelper.getAndRemove(part.slots(), slot);
-		}
-
-		public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-			part.setInventorySlotContents(slot, stack);
-			part.markDirty();
-		}
-
-		public void clear() {
-			part.setInventorySlotContents(slot, null);
-		}
-	}
-
-	public static class CustomInventoryCrafting extends InventoryCrafting {
-		public ISonarInventoryTile part;
-		public Container container;
-
-		public CustomInventoryCrafting(ISonarInventoryTile tileDeskCraftingPart, Container container, int width, int height) {
-			super(container, width, height);
-			this.part = tileDeskCraftingPart;
-			this.container = container;
-		}
-
-		public int getSizeInventory() {
-			return 9;
-		}
-
-		@Nullable
-		public ItemStack getStackInSlot(int index) {
-			return index >= this.getSizeInventory() ? null : this.part.getStackInSlot(index);
-		}
-
-		@Nullable
-		public ItemStack removeStackFromSlot(int index) {
-			return ItemStackHelper.getAndRemove(part.slots(), index);
-		}
-
-		@Nullable
-		public ItemStack decrStackSize(int index, int count) {
-			ItemStack itemstack = ItemStackHelper.getAndSplit(part.slots(), index, count);
-			if (itemstack != null) {
-				this.container.onCraftMatrixChanged(this);
-			}
-			return itemstack;
-		}
-
-		public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-			this.part.setInventorySlotContents(index, stack);
-			this.container.onCraftMatrixChanged(this);
-		}
-
-		public void clear() {
-			for (int i = 0; i < this.getSizeInventory(); ++i) {
-				part.setInventorySlotContents(i, ItemStack.EMPTY);
-			}
-		}
-	}
-
-	public ContainerDeskCrafting(EntityPlayer player, ISonarInventoryTile tileDeskCraftingPart) {
-		this.craftingPart = tileDeskCraftingPart;
-		this.craftMatrix = new CustomInventoryCrafting(tileDeskCraftingPart, this, 3, 3);
-		this.craftResult = new CustomCraftResult(tileDeskCraftingPart, 9);
+	public ContainerDeskCrafting(EntityPlayer player, SonarInventory inv) {
+		this.inv = inv;
+		this.craftMatrix = new CustomInventoryCrafting(inv, this, 3, 3);
+		this.craftResult = new CustomCraftResult(inv, 9);
 		this.player = player;
 
 		for (int i = 0; i < 3; i++) {
@@ -129,7 +52,7 @@ public class ContainerDeskCrafting extends Container {
 	@Override
 	public void onCraftMatrixChanged(IInventory inv) {
 		this.craftResult.setInventorySlotContents(9, CraftingManager.findMatchingResult(this.craftMatrix, player.getEntityWorld()));
-		this.craftingPart.markDirty();
+		this.inv.markChanged();
 	}
 
 	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
@@ -185,6 +108,85 @@ public class ContainerDeskCrafting extends Container {
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 		return true;
+	}
+
+
+
+	public static class CustomCraftResult extends InventoryCraftResult {
+		public SonarInventory inv;
+		public int slot;
+
+		public CustomCraftResult(SonarInventory tileDeskCraftingPart, int slot) {
+			this.inv = tileDeskCraftingPart;
+			this.slot = slot;
+		}
+
+		@Nullable
+		public ItemStack getStackInSlot(int index) {
+			return inv.getStackInSlot(slot);
+		}
+
+		public ItemStack decrStackSize(int index, int count) {
+			return ItemStackHelper.getAndRemove(inv.slots(), slot);
+		}
+
+		public ItemStack removeStackFromSlot(int index) {
+			return ItemStackHelper.getAndRemove(inv.slots(), slot);
+		}
+
+		public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+			inv.getWrapperInventory().setInventorySlotContents(slot, stack);
+			inv.getWrapperInventory().markDirty();
+		}
+
+		public void clear() {
+			inv.getWrapperInventory().setInventorySlotContents(slot, null);
+		}
+	}
+
+	public static class CustomInventoryCrafting extends InventoryCrafting {
+		public SonarInventory inv;
+		public Container container;
+
+		public CustomInventoryCrafting(SonarInventory inv, Container container, int width, int height) {
+			super(container, width, height);
+			this.inv = inv;
+			this.container = container;
+		}
+
+		public int getSizeInventory() {
+			return 9;
+		}
+
+		@Nullable
+		public ItemStack getStackInSlot(int index) {
+			return index >= this.getSizeInventory() ? null : this.inv.getStackInSlot(index);
+		}
+
+		@Nullable
+		public ItemStack removeStackFromSlot(int index) {
+			return ItemStackHelper.getAndRemove(inv.slots(), index);
+		}
+
+		@Nullable
+		public ItemStack decrStackSize(int index, int count) {
+			ItemStack itemstack = ItemStackHelper.getAndSplit(inv.slots(), index, count);
+			if (itemstack != null) {
+				this.container.onCraftMatrixChanged(this);
+			}
+			return itemstack;
+		}
+
+		public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
+			this.inv.getWrapperInventory().setInventorySlotContents(index, stack);
+			this.container.onCraftMatrixChanged(this);
+		}
+
+		public void clear() {
+			for (int i = 0; i < this.getSizeInventory(); ++i) {
+				inv.getWrapperInventory().setInventorySlotContents(i, ItemStack.EMPTY);
+			}
+		}
 	}
 
 }

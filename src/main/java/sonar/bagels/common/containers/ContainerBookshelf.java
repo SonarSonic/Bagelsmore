@@ -8,9 +8,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import sonar.bagels.common.tileentity.TileBookshelf;
 import sonar.bagels.utils.BagelsHelper;
-import sonar.core.inventory.ContainerSonar;
+import sonar.core.inventory.containers.ContainerSonar;
 import sonar.core.inventory.TransferSlotsManager;
-import sonar.core.inventory.TransferSlotsManager.TransferType;
 
 public class ContainerBookshelf extends ContainerSonar {
 	private TileBookshelf entity;
@@ -29,7 +28,7 @@ public class ContainerBookshelf extends ContainerSonar {
 	public ContainerBookshelf(InventoryPlayer inventory, TileBookshelf entity) {
 		this.entity = entity;
 		for (int j = 0; j < entity.getSizeInventory(); j++) {
-			addSlotToContainer(new Slot(entity.inv(), j, 8 + 18 + j * 18, 20 + 16));
+			addSlotToContainer(new Slot(entity, j, 8 + 18 + j * 18, 20 + 16));
 		}
 		addInventory(inventory, 8, 84);
 	}

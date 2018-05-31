@@ -7,16 +7,16 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerDeskCrafting;
 import sonar.core.client.gui.GuiSonar;
-import sonar.core.inventory.ISonarInventoryTile;
+import sonar.core.inventory.SonarInventory;
 
 @SideOnly(Side.CLIENT)
 public class GuiDeskCrafting extends GuiSonar {
 	private static final ResourceLocation background = new ResourceLocation(BagelsConstants.MODID + ":textures/gui/crafting_part.png");
-	private final ISonarInventoryTile inv;
+	private final SonarInventory inv;
 
-	public GuiDeskCrafting(EntityPlayer player, ISonarInventoryTile tileDeskCraftingPart) {
-		super(new ContainerDeskCrafting(player, tileDeskCraftingPart));
-		this.inv = tileDeskCraftingPart;
+	public GuiDeskCrafting(EntityPlayer player, SonarInventory inv) {
+		super(new ContainerDeskCrafting(player, inv));
+		this.inv = inv;
 		this.xSize = 176;
 		this.ySize = 166;
 

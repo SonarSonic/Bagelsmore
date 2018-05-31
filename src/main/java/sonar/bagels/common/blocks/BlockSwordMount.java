@@ -20,9 +20,9 @@ import net.minecraft.world.World;
 import sonar.bagels.common.tileentity.TileSwordMount;
 import sonar.core.common.block.SonarMaterials;
 import sonar.core.common.block.properties.SonarProperties;
-import sonar.core.helpers.InventoryHelper;
 import sonar.core.helpers.NBTHelper.SyncType;
 import sonar.core.integration.multipart.BlockFacingMultipart;
+import sonar.core.api.inventories.ISonarInventoryTile;
 
 public class BlockSwordMount extends BlockFacingMultipart {
 
@@ -90,7 +90,10 @@ public class BlockSwordMount extends BlockFacingMultipart {
 	}
 
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if(tile instanceof ISonarInventoryTile){
+			net.minecraft.inventory.InventoryHelper.dropInventoryItems(world, pos, ((ISonarInventoryTile) tile).inv().getWrapperInventory());
+		}
 		super.breakBlock(world, pos, state);
-		InventoryHelper.dropInventory(world.getTileEntity(pos), world, pos, state);
 	}
 }

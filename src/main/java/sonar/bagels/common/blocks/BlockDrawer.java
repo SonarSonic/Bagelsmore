@@ -19,8 +19,8 @@ import sonar.bagels.common.tileentity.TileDrawer;
 import sonar.bagels.utils.BagelsHelper;
 import sonar.core.common.block.SonarMaterials;
 import sonar.core.common.block.properties.SonarProperties;
-import sonar.core.helpers.InventoryHelper;
 import sonar.core.integration.multipart.BlockFacingMultipart;
+import sonar.core.api.inventories.ISonarInventoryTile;
 
 public abstract class BlockDrawer extends BlockFacingMultipart implements IDeskPart {
 
@@ -51,8 +51,11 @@ public abstract class BlockDrawer extends BlockFacingMultipart implements IDeskP
 	}
 
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEntity tile = world.getTileEntity(pos);
+		if(tile instanceof ISonarInventoryTile){
+			net.minecraft.inventory.InventoryHelper.dropInventoryItems(world, pos, ((ISonarInventoryTile) tile).inv().getWrapperInventory());
+		}
 		super.breakBlock(world, pos, state);
-		InventoryHelper.dropInventory(world.getTileEntity(pos), world, pos, state);
 	}
 
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {

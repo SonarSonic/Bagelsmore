@@ -12,9 +12,9 @@ import sonar.bagels.client.gui.GuiStorageDrawer;
 import sonar.bagels.common.containers.ContainerStorageDrawer;
 import sonar.core.api.IFlexibleGui;
 import sonar.core.helpers.NBTHelper.SyncType;
-import sonar.core.inventory.ISonarInventory;
-import sonar.core.inventory.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.api.inventories.ISonarInventory;
+import sonar.core.api.inventories.ISonarInventoryTile;
+import sonar.core.inventory.SonarInventoryTile;
 
 public abstract class TileStorageDrawer extends TileDrawer implements IFlexibleGui, ISonarInventoryTile {
 
@@ -22,7 +22,7 @@ public abstract class TileStorageDrawer extends TileDrawer implements IFlexibleG
 
 		public Large() {
 			super();
-			inv = new SonarInventory(this, 32);
+			inv = new SonarInventoryTile(this, 32);
 			syncList.addParts(inv);
 		}
 
@@ -37,7 +37,7 @@ public abstract class TileStorageDrawer extends TileDrawer implements IFlexibleG
 
 		public Small() {
 			super();
-			inv = new SonarInventory(this, 16);
+			inv = new SonarInventoryTile(this, 16);
 			syncList.addParts(inv);
 		}
 
