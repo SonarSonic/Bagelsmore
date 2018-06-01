@@ -1,15 +1,15 @@
 package sonar.bagels.common.containers;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import sonar.bagels.common.tileentity.TileBookshelf;
 import sonar.bagels.utils.BagelsHelper;
-import sonar.core.inventory.containers.ContainerSonar;
-import sonar.core.inventory.TransferSlotsManager;
+import sonar.core.handlers.inventories.TransferSlotsManager;
+import sonar.core.handlers.inventories.containers.ContainerSonar;
+
+import javax.annotation.Nullable;
 
 public class ContainerBookshelf extends ContainerSonar {
 	private TileBookshelf entity;

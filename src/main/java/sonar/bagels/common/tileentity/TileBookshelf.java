@@ -8,9 +8,9 @@ import sonar.bagels.client.gui.GuiBookshelf;
 import sonar.bagels.common.containers.ContainerBookshelf;
 import sonar.bagels.utils.BagelsHelper;
 import sonar.core.api.IFlexibleGui;
+import sonar.core.handlers.inventories.SonarInventoryTile;
 import sonar.core.integration.multipart.SonarMultipartHelper;
 import sonar.core.integration.multipart.TileInventoryMultipart;
-import sonar.core.inventory.SonarInventoryTile;
 import sonar.core.network.sync.SyncTagType;
 
 public class TileBookshelf extends TileInventoryMultipart implements IFlexibleGui {

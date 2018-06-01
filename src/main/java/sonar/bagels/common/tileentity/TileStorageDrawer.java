@@ -11,10 +11,10 @@ import sonar.bagels.api.DrawerType;
 import sonar.bagels.client.gui.GuiStorageDrawer;
 import sonar.bagels.common.containers.ContainerStorageDrawer;
 import sonar.core.api.IFlexibleGui;
-import sonar.core.helpers.NBTHelper.SyncType;
 import sonar.core.api.inventories.ISonarInventory;
 import sonar.core.api.inventories.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventoryTile;
+import sonar.core.handlers.inventories.SonarInventoryTile;
+import sonar.core.helpers.NBTHelper.SyncType;
 
 public abstract class TileStorageDrawer extends TileDrawer implements IFlexibleGui, ISonarInventoryTile {
 

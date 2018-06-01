@@ -1,7 +1,5 @@
 package sonar.bagels.common.tileentity;
 
-import java.util.Optional;
-
 import mcmultipart.api.item.ItemBlockMultipart;
 import mcmultipart.api.multipart.IMultipart;
 import mcmultipart.api.multipart.IMultipartTile;
@@ -21,14 +19,16 @@ import sonar.bagels.api.DeskPosition;
 import sonar.bagels.client.gui.GuiDeskCrafting;
 import sonar.bagels.common.containers.ContainerDeskCrafting;
 import sonar.core.api.IFlexibleGui;
-import sonar.core.api.utils.BlockCoords;
-import sonar.core.helpers.NBTHelper.SyncType;
-import sonar.core.integration.multipart.TileSonarMultipart;
 import sonar.core.api.inventories.ISonarInventory;
 import sonar.core.api.inventories.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventoryTile;
+import sonar.core.api.utils.BlockCoords;
+import sonar.core.handlers.inventories.SonarInventoryTile;
+import sonar.core.helpers.NBTHelper.SyncType;
+import sonar.core.integration.multipart.TileSonarMultipart;
 import sonar.core.network.FlexibleGuiHandler;
 import sonar.core.network.sync.SyncCoords;
+
+import java.util.Optional;
 
 public class TileDesk extends TileSonarMultipart {
 

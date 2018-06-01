@@ -1,7 +1,5 @@
 package sonar.bagels.common.tileentity;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.inventory.GuiFurnace;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +23,9 @@ import sonar.bagels.api.DrawerType;
 import sonar.core.api.IFlexibleGui;
 import sonar.core.api.inventories.ISonarInventory;
 import sonar.core.api.inventories.ISonarInventoryTile;
-import sonar.core.inventory.SonarInventoryTile;
+import sonar.core.handlers.inventories.SonarInventoryTile;
+
+import javax.annotation.Nullable;
 
 public class TileSmeltingDrawer extends TileDrawer implements IFlexibleGui, ITickable, ISonarInventoryTile {
 

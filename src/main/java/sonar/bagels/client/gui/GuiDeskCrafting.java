@@ -7,7 +7,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import sonar.bagels.BagelsConstants;
 import sonar.bagels.common.containers.ContainerDeskCrafting;
 import sonar.core.client.gui.GuiSonar;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.handlers.inventories.SonarInventory;
 
 @SideOnly(Side.CLIENT)
 public class GuiDeskCrafting extends GuiSonar {

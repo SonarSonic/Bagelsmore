@@ -1,19 +1,12 @@
 package sonar.bagels.common.containers;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import sonar.core.inventory.SonarInventory;
+import sonar.core.handlers.inventories.SonarInventory;
+
+import javax.annotation.Nullable;
 
 public class ContainerDeskCrafting extends Container {
 	private final SonarInventory inv;
