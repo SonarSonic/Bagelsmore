@@ -1,3 +1,5 @@
+import org.gradle.api.publish.maven.MavenPublication
+
 buildscript {
     repositories {
         jcenter()
@@ -30,11 +32,25 @@ repositories {
         name = "MCMultipart"
         url = "http://maven.amadornes.com/"
     }
+    maven {
+        name = "ic2"
+        url = "http://maven.ic2.player.to/"
+    }
+    maven { url = "http://maven.ironhide.de/" }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
+apply plugin: 'maven-publish'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 version = "${minecraft_version}-${mod_version}"
+if (hasProperty('appendBuildNumber')) {
+    version = version + "-" + appendBuildNumber.toString()
+} else {
+    version = version + "-unofficial"
+}
 group= "sonar.bagels"
 archivesBaseName = "bagels"
 sourceCompatibility = targetCompatibility = "1.8"
@@ -48,23 +64,29 @@ minecraft {
     replace "@VERSION@", "${mod_version}"
     replace "sonarcore@[0.0.0,)", "sonarcore@[" + "${sonar_core_version}" +",)"
     replace "mcmultipart@[0.0.0,)", "mcmultipart@[" + "${mcmp_version}" +",)"
-    mappings = "snapshot_20171002"
-    makeObfSourceJar = false
+    mappings = "snapshot_20171003"
+    makeObfSourceJar = true
 }
 
 task deobfJar(type: Jar) { // Generate deobfuscated
     from sourceSets.main.output
     classifier = 'deobf'
-    archiveName = "bagelsmore-${minecraft_version}-${mod_version}-deobf.jar"
+    archiveName = "bagelsmore-${version}-deobf.jar"
 }
 tasks.build.dependsOn('deobfJar')
+
 artifacts {
     archives deobfJar
+    archives sourceJar
     archives jar
 }
 
 jar {
-    archiveName = "bagelsmore-${minecraft_version}-${mod_version}.jar"
+    archiveName = "bagelsmore-${version}.jar"
+}
+
+sourceJar {
+    archiveName = "bagelsmore-${version}-sources.jar"
 }
 
 def sonarcore_local = false
@@ -81,7 +103,7 @@ dependencies {
 
     deobfCompile "MCMultiPart2:MCMultiPart:${mcmp_version}"
     if (!sonarcore_local) {
-        //compileOnly "sonar-core:sonarcore:${minecraft_version}:${sonar_core_version}:deobf"
+        compileOnly "sonar:sonarcore:${minecraft_version}-${sonar_core_version}-${sonar_core_build_version}:deobf"
     } else {
         compile project(':Sonar-Core')
     }
@@ -92,7 +114,6 @@ processResources
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
         expand 'version':project.version, 'mcversion':project.minecraft.version
@@ -100,5 +121,22 @@ processResources
 
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+publishing {
+    tasks.publish.dependsOn 'build'
+    publications {
+        mavenJava(MavenPublication) {
+            groupId group_prefix
+            version version
+            artifactId "bagelsmore"
+            artifact jar
+            artifact sourceJar
+            artifact deobfJar
+        }
+    }
+    repositories {
+        mavenLocal()
     }
 }
