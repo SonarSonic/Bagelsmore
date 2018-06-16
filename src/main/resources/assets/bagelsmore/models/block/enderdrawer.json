@@ -1,9 +1,0 @@
-{
-    "parent":"bagelsmore:block/DrawerSmallModel",
-    "textures": {
-        "table": "bagelsmore:model/ender_drawer_top",
-        "0": "bagelsmore:model/ender_drawer_dark",
-        "4": "bagelsmore:model/ender_drawer_front",
-        "5": "bagelsmore:model/gold_handle"
-    }
-}
