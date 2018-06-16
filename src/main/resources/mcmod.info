@@ -1,0 +1,14 @@
+[
+{
+"modid": "bagelsmore",
+"name": "Bagelsmore: The Return",
+"description": "Take a desk on me.",
+"version": "${version}",
+"mcversion": "${mcversion}",
+"updateUrl": "",
+"authors": ["Ollie Lansdell"],
+"credits": "Created by Ollie Lansdell",
+"logoFile": "",
+"screenshots": []
+}
+]
