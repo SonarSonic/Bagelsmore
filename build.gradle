@@ -203,14 +203,10 @@ curseforge {
         relations {
             requiredLibrary 'sonar-core'
             requiredLibrary 'mcmultipart'
-            optionalLibrary 'tesla'
-            optionalLibrary 'industrial-craft'
-            optionalLibrary 'redstone-flux'
-            optionalLibrary 'applied-energistics-2'
         }
 
         mainArtifact(jar) {
-            displayName = "PracticalLogistics2-${minecraft_version}-${mod_version}"
+            displayName = "Bagelsmore-${minecraft_version}-${mod_version}"
             //throws if not release, beta or alpha
             releaseType = !commit_release_type.equals('none') ? commit_release_type : 'release'
             changelog = file("${projectDir}/change_log.html").text
