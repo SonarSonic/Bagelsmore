@@ -136,7 +136,7 @@ public class TileSmeltingDrawer extends TileDrawer implements IFlexibleGui, ITic
 				if (this.isBurning() && this.canSmelt()) {
 					++this.cookTime;
 
-					if (this.cookTime == this.totalCookTime) {
+					if (this.cookTime >= this.totalCookTime) {
 						this.cookTime = 0;
 						this.totalCookTime = this.getCookTime(getStackInSlot(0));
 						this.smeltItem();
